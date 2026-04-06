@@ -1,17 +1,6 @@
 import { makeAutoObservable } from "mobx";
-import type { ComponentType } from "react";
 import { getStore, Store, useStore } from "@/store";
-import type { ModalProps } from "@components/Modal";
-
-type ModalAction<T = unknown> = (data?: T) => boolean | void;
-
-export type ModalItem = {
-    component?: ComponentType<any>;
-    props?: Partial<ModalProps> & {
-        onConfirm?: ModalAction;
-        onCancel?: ModalAction;
-    };
-};
+import type {ModalItem} from "@components/Modal";
 
 export class ModalStore {
     store: Store;
@@ -24,11 +13,11 @@ export class ModalStore {
 
     open(payload: ModalItem) {
         const { component, props } = payload;
-        let modalData: ModalItem = {
-            props
-        }
-        if (component){
-            modalData["component"] = component
+        const modalData: ModalItem = {
+            props: props ?? {}
+        };
+        if (component) {
+            modalData.component = component;
         }
         this.modals.push(modalData);
     }

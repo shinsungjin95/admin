@@ -1,181 +1,135 @@
-import React from "react";
+import React, {type ComponentType} from "react";
 import styled from "styled-components";
-import { theme } from "@/styles/theme";
-import { IoCloseOutline } from "react-icons/io5";
 import Button from "@components/Button";
+import {observer} from "mobx-react";
+import {useStore} from "@/store";
+import {ConfirmComponent} from "@components/Modal/style.tsx";
+
+export type ModalContentProps = {
+    modalDepth?: number;
+    width?: number | string;
+    maxHeight?: number | string;
+    title?: string;
+    closeBtn?: boolean;
+    onConfirm?: (data?: unknown) => void;
+    onCancel?: (data?: unknown) => void;
+};
 
 export type ModalProps = {
     idx?: number;
     type?: string;
-    component: React.ComponentType<any>;
+    component: React.ComponentType<ModalContentProps>;
     zIndex?: number;
-    onConfirm?: (data?: any) => void;
-    onCancel?: (data?: any) => void;
+    onConfirm?: (data?: unknown) => void;
+    onCancel?: (data?: unknown) => void;
+    modalDepth?: number | string;
     width?: number | string;
     maxHeight?: number | string;
     title?: string;
     closeBtn?: boolean;
     modalClassName?: string;
-    [key: string]: any;
+    message?: string;
+    cancelText?: string;
+    confirmText?: string;
+    [key: string]: unknown;
 };
 
-const Modal: React.FC<ModalProps> = ({
-                                         idx,
-                                         component: ContentComponent,
-                                         zIndex = 1000,
-                                         modalClassName = "",
-                                         onConfirm,
-                                         onCancel,
-                                         ...contentProps
-                                     }) => {
+export type ModalItem = {
+    component?: ComponentType<ModalContentProps>;
+    props?: Partial<ModalProps> & {
+        onConfirm?: ModalAction;
+        onCancel?: ModalAction;
+    };
+};
 
-    const {type, width, maxHeight, title, closeBtn, ...restContentProps } = contentProps;
-    console.log(restContentProps)
+export type ModalAction<T = unknown> = (data?: T) => boolean | void;
+
+
+
+const Modal: React.FC<ModalProps> = observer(({
+                                                  idx,
+                                                  component: ContentComponent,
+                                                  modalClassName = "",
+                                                  ...contentProps
+                                              }) => {
+    const {
+        type,
+        width,
+        maxHeight,
+        title,
+        onCancel,
+        onConfirm,
+        closeBtn,
+        ...restContentProps
+    } = contentProps;
+
+    const {modalStore} = useStore();
+
+    const runAndClose = (action?: ModalAction, data?: unknown) => {
+        if (action) {
+            const shouldClose = action(data);
+            if (shouldClose === false) return;
+        }
+        modalStore.close();
+    };
+
+    const handleCancel = (data?: unknown) => {
+        runAndClose(onCancel, data);
+    };
+
+    const handleConfirm = (data?: unknown) => {
+        runAndClose(onConfirm, data);
+    };
+
+
     return (
         <ModalBody className={modalClassName}>
-            <Dimmer $zIndex={zIndex} $index={idx} onClick={onCancel}  />
-            <ModalWrapper
-                $type={type}
-                $width={width}
-                $maxHeight={maxHeight}
-                onClick={(e) => e.stopPropagation()}
-            >
+            <div className={"modal-inner"}>
                 {
-                    title&&
-                    <h1 className={"modal-title"}>{title}</h1>
-                }
-                {
-                    closeBtn &&
-                    <div
-                        className={"modal-close-wrap"}
-                        onClick={onCancel}>
-                        <IoCloseOutline
-                            color={`${type === "CONFIRM" ? theme.colors.palette.brand900: theme.colors.palette.white}`}
-                            size={24}
+                    type === "CONFIRM" ? (
+                        <ConfirmComponent
+                            $modalDepth={idx}
+                        >
+                            <p className={"confirm-message"}>{contentProps.message}</p>
+                            <div className={"confirm-btn-wrap"}>
+                                <Button outlined size={"sm"} radius={"sm"} onClick={handleCancel}>
+                                    {contentProps.cancelText}
+                                </Button>
+                                <Button size={"sm"} radius={"sm"} onClick={handleConfirm}>
+                                    {contentProps.confirmText}
+                                </Button>
+                            </div>
+                        </ConfirmComponent>
+                    ) : ContentComponent ? (
+                        <ContentComponent
+                            {...restContentProps}
+                            modalDepth={idx}
+                            width={width}
+                            maxHeight={maxHeight}
+                            title={title}
+                            closeBtn={closeBtn}
+                            onConfirm={handleConfirm}
+                            onCancel={handleCancel}
                         />
-                    </div>
-                }
-                <div className={"modal-inner"}>
-                    {
-                        type === "CONFIRM" ? (
-                            <>
-                                <p className={"confirm-message"}>{contentProps.message}</p>
-                                <div className={"confirm-btn-wrap"}>
-                                    <Button outlined size={"sm"} radius={"sm"} onClick={onCancel}>
-                                        {contentProps.cancelText}
-                                    </Button>
-                                    <Button size={"sm"} radius={"sm"} onClick={onConfirm}>
-                                        {contentProps.confirmText}
-                                    </Button>
-                                </div>
-                            </>
-                        ) : ContentComponent ? (
-                            <ContentComponent
-                                {...restContentProps}
-                                modalDepth={idx}
-                                onConfirm={onConfirm}
-                                onCancel={onCancel}
-                            />
-                        ) : null}
-                </div>
-            </ModalWrapper>
+                    ) : null}
+            </div>
         </ModalBody>
     );
-};
+});
 
-const ModalBody= styled.div<{ $zIndex?: number, $index?: number }>`
+const ModalBody = styled.div<{ $zIndex?: number, $index?: number }>`
     position: fixed;
     inset: 0;
-    z-index: ${({ $zIndex = 1000 }) => $zIndex};
+    z-index: ${({$zIndex = 1000}) => $zIndex};
     display: flex;
     align-items: center;
     justify-content: center;
+    .modal-inner{
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
 `
 
-
-const Dimmer = styled.div<{ $zIndex?: number, $index?: number }>`
-    width: 100%;
-    height: 100%;
-    background: ${({ theme }) => `${theme.colors.palette.brand900}66`};
-    opacity: ${({ $index }) => {
-        if ($index === 0) return 1;
-        return 0;
-    }};
-`;
-
-const ModalWrapper = styled.div<{ $width?: number | string, $maxHeight?: number | string, $type?:  string }>`
-    background: ${theme.colors.gray.white};
-    border-radius: 12px;
-    overflow: hidden;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 32px rgba(0, 0, 0, 0.3);
-    width: ${({ $width,$type }) => {
-        if (!$width) return "100%";
-        if ($type === "CONFIRM") return "auto";
-        return typeof $width === "number" ? `${$width}px` : $width;
-    }};
-    max-width: ${({ $width, $type }) => {
-        if ($type === "CONFIRM") return "none";
-        if (!$width) return "520px";
-        return typeof $width === "number" ? `${$width}px` : $width;
-    }};
-    min-width: ${({ $type }) => {
-        if ($type === "CONFIRM") return "320px";
-        return "none";
-    }};
-
-    .modal-inner{
-        padding: ${({ $type }) => {
-            if ($type === "CONFIRM") return "32px 20px 32px";
-            return "20px";
-        }};
-        min-height: ${({ $type }) => {
-            if ($type === "CONFIRM") return "135px";
-        }};
-
-        display: ${({ $type }) => {
-            if ($type === "CONFIRM") return "flex";
-            return "block";
-        }};
-        align-items: center;
-        flex-direction: column;
-        justify-content: space-between;
-        .confirm-message{
-            font-weight: 500;
-            font-size: 15px;
-            line-height: 22px;
-            color: ${theme.colors.palette.layoutDark};
-            letter-spacing: -0.01em;
-            text-align: center;
-            white-space: pre-wrap;
-        } 
-        .confirm-btn-wrap{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-    }
-    .modal-title{
-        width: 100%;
-        background-color: ${theme.colors.palette.brand700};
-        text-align: center;
-        padding: 16px 20px;
-        color: ${theme.colors.palette.white};
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 24px;
-        letter-spacing: -0.16px;
-    }
-    .modal-close-wrap{
-        position: absolute;
-        right: 24px;
-        top: 16px;
-        cursor: pointer;
-    }
-`;
 
 export default Modal;

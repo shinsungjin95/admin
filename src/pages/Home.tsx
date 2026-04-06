@@ -13,13 +13,12 @@ const Home = observer(() => {
             MODAL_PAYLOAD.TEST_MODAL({
                 props: {
                     data: "실행 시킨 컴포넌트에서 데이터 전달 {}, [] 모두 가능",
-                    onConfirm: (data) => {
+                    onConfirm: (data?: unknown) => {
                         setToast("success", "수정이 완료 되었습니다.");
                         console.log("확인", data);
                     },
-                    onCancel: (data) => {
-                        console.log(data, "취소");
-                        return false;
+                    onCancel: () => {
+                        console.log("취소 하고 다음 로직 실행");
                     },
                 },
             })
