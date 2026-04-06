@@ -7,7 +7,7 @@ export class MenuStore {
         this.store = store;
         makeAutoObservable(this, {}, {autoBind: true});
         if (initialNavigation) {
-            this.menuData = initialNavigation;
+            this.menuData = initialNavigation.navigation;
         }
     }
 

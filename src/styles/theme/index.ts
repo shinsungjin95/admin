@@ -76,7 +76,7 @@ export const theme = {
     },
 
     size: {
-        headerHeight: "80px",
+        headerHeight: "96px",
         sidebarWidth: "250px",
     },
 };

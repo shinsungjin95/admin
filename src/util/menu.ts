@@ -1,190 +1,184 @@
-/**
- * slug 배열을 기준으로 메뉴 트리에서 해당 페이지 객체를 찾는다.
- */
+// ===============================
+// ✅ 타입 정의
+// ===============================
+
+
+import React from "react";
+
 export type MenuItem = {
-    id: number | string;
-    title: string;
-    slug: string;
+    name: string;
+    link?: string;
+    display?: "none" | "show";
     children?: MenuItem[];
 };
-export const findPageBySlug = (menu: MenuItem[], slugs: string[], depth: number = 0): MenuItem | null => {
-    if (!Array.isArray(slugs) || slugs.length === 0) {
-        return null;
+
+export type BreadcrumbItem = {
+    name: string;
+    link?: string;
+    path?: string;
+};
+
+
+// ===============================
+// ✅ 기본 유틸
+// ===============================
+export const buildKey = (indexes: number[]): string => {
+    return indexes.join(".");
+}
+
+export const normalize = (path?: string): string => {
+    if (!path) return "";
+
+    const queryIndex = path.indexOf("?");
+    if (queryIndex !== -1) path = path.slice(0, queryIndex);
+
+    if (path.length > 1 && path.endsWith("/")) {
+        path = path.slice(0, -1);
     }
-    for (const item of menu) {
-        if (item.slug === slugs[depth]) {
-            if (depth === slugs.length - 1) {
-                return item;
-            }
-            if (item.children) {
-                const found = findPageBySlug(item.children, slugs, depth + 1);
-                if (found) return found;
-            }
+
+    return path;
+};
+
+
+// ===============================
+// ✅ 핵심: 경로 매칭 (통합)
+// ===============================
+export const matchPath = (pattern?: string, pathname?: string) => {
+    if (!pattern || !pathname) {
+        return { matched: false, score: -1 };
+    }
+    let segmentCount = 0;
+    const patternSegments = normalize(pattern).split("/");
+    const pathnameSegments = normalize(pathname).split("/");
+
+    if (pathnameSegments.length < patternSegments.length) {
+        return { matched: false, score: -1 };
+    }
+    for (let index = 0; index < patternSegments.length; index++) {
+        const patternSegment = patternSegments[index];
+        const pathnameSegment = pathnameSegments[index];
+
+        if (patternSegment.startsWith(":")) {
+            continue;
+        }
+
+        if (patternSegment !== pathnameSegment) {
+            return { matched: false, score: -1 };
+        }
+
+        segmentCount++;
+    }
+
+    return {
+        matched: true,
+        score: segmentCount,
+    };
+};
+
+
+// ===============================
+// ✅ 트리 탐색 (현재 경로 찾기)
+// ===============================
+export const findPath = (nodes: MenuItem[], pathname: string, indexes: number[] = []): number[] | null => {
+    for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        const current = [...indexes, i];
+
+        if (node.link) {
+            const { matched } = matchPath(node.link, pathname);
+            if (matched) return current;
+        }
+
+        if (node.children?.length) {
+            const child = findPath(node.children, pathname, current);
+            if (child) return child;
         }
     }
+
     return null;
 };
 
 
-/**
- * 메뉴 트리에서 현재 페이지 기준 breadcrumb 경로와
- * 각 depth의 sibling 메뉴 목록을 생성한다.
- * 각 items에는 active 여부가 포함된다.
- */
+// ===============================
+// ✅ active key 생성
+// ===============================
+export const getActiveKeysFromPath = (path: number[]): string[] => {
+    const keys: string[] = [];
 
-type BreadcrumbItem = {
-    current: MenuItem;
-    items: {
-        id: MenuItem["id"];
-        title: string;
-        slug: string;
-        active: boolean;
-    }[];
+    for (let i = 0; i < path.length; i++) {
+        keys.push(buildKey(path.slice(0, i + 1)));
+    }
+
+    return keys;
 };
 
-export const getBreadcrumbMenus = (menu: MenuItem[], targetId: MenuItem["id"]): BreadcrumbItem[] | null => {
-    let path: MenuItem[] | null = null;
-    const find = (items: MenuItem[], parents: MenuItem[] = []): boolean => {
-        for (const item of items) {
-            const currentPath = [...parents, item];
 
-            if (item.id === targetId) {
-                path = currentPath;
-                return true;
-            }
-            if (item.children) {
-                const found = find(item.children, currentPath);
-                if (found) return true;
-            }
+// ===============================
+// ✅ open key toggle
+// ===============================
+export const toggleKey = (previousKeys: string, setOpenKey: React.Dispatch<React.SetStateAction<string[]>>) => {
+    setOpenKey((prev) => {
+        if (prev.includes(previousKeys)) {
+            return prev.filter((k) => k !== previousKeys);
         }
-        return false;
-    };
-    find(menu);
-    if (!path) return null;
-
-    return path.map((node, index) => {
-        const siblings =
-            index === 0 ? menu : path![index - 1].children || [];
-
-        return {
-            current: node,
-            items: siblings.map(item => ({
-                id: item.id,
-                title: item.title,
-                slug: item.slug,
-                active: item.id === node.id
-            }))
-        };
+        return [...prev, previousKeys];
     });
 };
 
 
-/**
- * 특정 메뉴 id의 자식 메뉴 목록을 가져온다.
- *
- * @param {Array} menu 전체 메뉴 트리
- * @param {number|string|null} id 기준이 되는 메뉴 id
- *
- * @returns {Array} 해당 메뉴의 children 배열 (없으면 빈 배열)
- */
-export const getMenu = (
-    menu: MenuItem[],
-    id: MenuItem["id"] | null = null
-): MenuItem[] => {
-    if (!id) {
-        return Array.isArray(menu) ? menu : [];
-    }
+// ===============================
+// ✅ breadcrumb 매칭
+// ===============================
+export const breadcrumbMatch = (
+    pathname: string,
+    list: MenuItem[]
+): { nodes: MenuItem[]; score: number } | null => {
+    let best: { nodes: MenuItem[]; score: number } | null = null;
 
-    const find = (items: MenuItem[]): MenuItem[] | null => {
-        for (const item of items) {
-            if (item.id === id) {
-                return item.children || [];
-            }
+    const walk = (node: MenuItem, trail: MenuItem[]) => {
+        if (node.link) {
+            const { matched, score } = matchPath(node.link, pathname);
 
-            if (item.children) {
-                const result = find(item.children);
-                if (result) return result;
+            if (matched) {
+                const candidate = {
+                    nodes: [...trail, node],
+                    score,
+                };
+
+                if (
+                    !best ||
+                    candidate.score > best.score ||
+                    (candidate.score === best.score &&
+                        candidate.nodes.length > best.nodes.length)
+                ) {
+                    best = candidate;
+                }
             }
         }
-        return null;
+
+        node.children?.forEach((child) =>
+            walk(child, [...trail, node])
+        );
     };
 
-    return find(menu) || [];
-};
+    list.forEach((item) => walk(item, []));
 
-/**
- * 특정 메뉴 id 기준으로 URL 경로를 생성한다.
- *
- * @param {Array} menu 전체 메뉴 트리
- * @param {number|string} id 찾을 메뉴 id
- * @param {Array<string>} parents 상위 slug 누적 배열 (재귀 내부 사용)
- *
- * @returns {string|undefined} 생성된 URL 경로
- */
-export const getMenuPath = (
-    menu: MenuItem[],
-    id: MenuItem["id"],
-    parents: string[] = []
-): string | undefined => {
-    for (const item of menu) {
-        const path = [...parents, item.slug];
-
-        if (item.id === id) {
-            if (item.children && item.children.length) {
-                return "/" + [...path, item.children[0].slug].join("/");
-            }
-            return "/" + path.join("/");
-        }
-
-        if (item.children) {
-            const result = getMenuPath(item.children, id, path);
-            if (result) return result;
-        }
-    }
+    return best;
 };
 
 
-/**
- * 현재 페이지 기준으로 depth 탭 메뉴 데이터를 생성한다.
- */
-type PageTab = {
-    id: MenuItem["id"];
-    title: string;
-    slug: string;
-    active: boolean;
-    children: {
-        id: MenuItem["id"];
-        title: string;
-        slug: string;
-        active: boolean;
-    }[] | null;
-};
+// ===============================
+// ✅ breadcrumb 생성
+// ===============================
+export const getBreadcrumbFromPath = (
+    pathname: string,
+    list: MenuItem[]
+): BreadcrumbItem[] => {
+    const match = breadcrumbMatch(pathname, list);
+    if (!match) return [];
 
-export const getPageTabs = (
-    menu: MenuItem[],
-    currentId: MenuItem["id"],
-    path: MenuItem[] | null
-): PageTab[] | null => {
-    if (!path) return null;
-
-    const parent = path[1];
-
-    if (!parent?.children) return null;
-
-    return parent.children.map(item => ({
-        id: item.id,
-        title: item.title,
-        slug: item.slug,
-        active:
-            item.id === currentId ||
-            item.children?.some(child => child.id === currentId) ||
-            false,
-        children:
-            item.children?.map(child => ({
-                id: child.id,
-                title: child.title,
-                slug: child.slug,
-                active: child.id === currentId
-            })) || null
+    return match.nodes.map((item) => ({
+        name: item.name,
+        path: item.link,
     }));
 };

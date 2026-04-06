@@ -5,14 +5,14 @@ import { ModalStore } from "./modal";
 import { UserStore } from "./user";
 import { ExampleStore } from "./example";
 import { LoadingStore } from "./loading";
-import { MenuStore } from "./menuStore";
+import { MenuStore } from "./menu";
 
 type InitialState = Record<string, unknown>;
 type StoreProviderProps = {
     children: ReactNode;
     initialState?: InitialState;
 };
-
+let store: Store | null;
 export const StoreContext = createContext<Store | null>(null);
 export class Store {
     modalStore: ModalStore;
@@ -20,7 +20,6 @@ export class Store {
     exampleStore: ExampleStore;
     loadingStore: LoadingStore;
     menuStore: MenuStore;
-
 
     constructor(initialState?: InitialState) {
         this.modalStore = new ModalStore(this);
@@ -31,7 +30,7 @@ export class Store {
     }
 }
 
-let store: Store | null = new Store();
+
 
 export const StoreProvider = ({children, initialState}: StoreProviderProps) => {
     if (!store) {

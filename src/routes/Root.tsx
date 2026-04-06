@@ -8,6 +8,7 @@ import {setGlobalNavigate, setGlobalUrlParams} from "@/util";
 import styled from "styled-components";
 import {theme} from "@styles/theme";
 import ModalController from "@/components/Modal/controller.tsx";
+import SideNav from "@components/Header/SideNav.tsx";
 
 const Root = () => {
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Root = () => {
     return (
         <Suspense fallback={<LoadingContent />}>
             <Header/>
+            <SideNav />
             <RootWrapper>
                 <Outlet/>
             </RootWrapper>
@@ -29,6 +31,13 @@ const Root = () => {
 
 const RootWrapper = styled.div`
     margin-top: ${theme.size.headerHeight};
+    transition: all .3s ease-in-out;
+    padding: 40px;
+    width: calc(100% - ${theme.size.sidebarWidth});
+    position: relative;
+    min-height: calc(100vh - ${theme.size.headerHeight});
+    margin-left: ${theme.size.sidebarWidth};
+    background-color: #eee;
 `
 
 export default Root;
