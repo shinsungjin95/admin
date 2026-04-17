@@ -1,8 +1,9 @@
 import axios from "axios";
-import {getToken} from "@/api/token.js";
+import {getToken} from "@/util/auth.tsx";
 import {getLoadingStore} from "@/store/loading";
 import {getGlobalNavigate} from "@/util";
 import {setToast} from "@/util/toast.ts";
+import {EXCLUDE_TOKEN_PATH} from "@/constants";
 
 let delayTimer: ReturnType<typeof setTimeout> | null = null;
 const DELAY = 500;
@@ -20,8 +21,9 @@ const instance = axios.create({
 instance.interceptors.request.use(
     (config) => {
         const token = getToken();
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+        const isExcluded = EXCLUDE_TOKEN_PATH.find((url) => config.url.includes(url));
+        if (token && !isExcluded) {
+            config.headers.authorization = token;
         }
         getLoadingStore().startLoading();
         if (!delayTimer) {

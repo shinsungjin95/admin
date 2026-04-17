@@ -1,0 +1,16 @@
+import CardSection from "@/components/Layout/CardSection.tsx";
+import DragDropList from "@components/DragAndDrop";
+import {observer} from "mobx-react";
+import {useStore} from "@/store";
+
+
+const EtcInfo = observer(() => {
+    const { exampleStore } = useStore();
+    return (
+        <CardSection title="Dnd 리스트 사용 예시">
+            <DragDropList items={exampleStore.dndList} onChange={exampleStore.setReOrderDndList} />
+        </CardSection>
+    );
+});
+
+export default EtcInfo;

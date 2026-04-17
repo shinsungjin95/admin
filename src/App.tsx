@@ -5,11 +5,11 @@ import {RouterProvider} from "react-router-dom";
 import router from "@/routes";
 import {GlobalStyle} from "@/styles/GlobalStyle";
 import {theme} from "@/styles/theme";
-import {MENU} from "@/constants";
+import {MENU_LIST} from "@/constants";
 
 function App() {
     const initialState = {
-        navigation: MENU,
+        navigation: MENU_LIST,
     };
     return (
         <AppProviders initialState={initialState}>

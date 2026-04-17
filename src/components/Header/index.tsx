@@ -2,13 +2,26 @@ import styled from "styled-components";
 import {useLocation} from "react-router-dom";
 import {observer} from "mobx-react";
 import {theme} from "@styles/theme";
-import {getBreadcrumbFromPath, matchPath} from "@/util/menu.ts";
+import {findMenuByPath} from "@/util/menu.ts";
 import {useStore} from "@/store";
+import {setToast} from "@/util/toast.ts";
+import {useCookies} from "react-cookie";
+import {COOKIE_NAME} from "@/constants";
 
 const Header = observer(() => {
-    const {menuStore} = useStore();
+    const {menuStore, userStore} = useStore();
     const {pathname} = useLocation();
-    const currentDepths = getBreadcrumbFromPath(pathname, menuStore.menuData)
+    const currentDepths = findMenuByPath(menuStore.menuData, pathname, true);
+    const [cookies, setCookie, removeCookie] = useCookies([COOKIE_NAME]);
+    const logOut = async () => {
+        try {
+            if (cookies[COOKIE_NAME]) {
+                await userStore.setLogout(removeCookie);
+            }
+        } catch (e) {
+            setToast("warning", e)
+        }
+    }
     return (
         <>
             <HeaderWrap>
@@ -20,11 +33,10 @@ const Header = observer(() => {
                         currentDepths && currentDepths.length > 0 &&
                         <div className="page-info-area">
                             {currentDepths.map((item, key) => {
-                                const isActive = matchPath(item.path, pathname).matched;
                                 return (
                                     <div key={key} className={"page-seg"}>
-                                        <div className={isActive ? "active" : ""}>
-                                            {item.name}
+                                        <div className={`${currentDepths.length - 1 === key ? "active" : ""}`}>
+                                            {item.title}
                                         </div>
                                         {key < currentDepths.length - 1 && <span>/</span>}
                                     </div>
@@ -33,6 +45,7 @@ const Header = observer(() => {
                         </div>
                     }
                 </div>
+                <div className={"logout"} onClick={logOut}>로그아웃</div>
             </HeaderWrap>
         </>
     );
@@ -80,6 +93,10 @@ const HeaderWrap = styled.div`
                 }
             }
         }
+    }
+    .logout{
+        padding: 0 24px;
+        cursor: pointer;
     }
 `;
 export default Header;

@@ -1,7 +1,9 @@
 import { Bounce } from "react-toastify";
 import ROUTES from "@/constants/routes.ts";
-export const MODAL_TRANSITION_TIMEOUT = 300;
 
+export const COOKIE_NAME = import.meta.env.VITE_COOKIES_NAME;
+
+export const MODAL_TRANSITION_TIMEOUT = 300;
 
 export const TOAST_OPTIONS = {
     position: "top-right",
@@ -16,95 +18,67 @@ export const TOAST_OPTIONS = {
     theme: "light",
     transition: Bounce,
 };
-export const MENU =[
-    {
-        name: "guide",
-        link: `${ROUTES.SETTING.path}`
-    },
-    {
-        name: "depths menu",
-        children: [
-            {
-                name: "menu1",
-                link: `${ROUTES.DEPTHS.path}${ROUTES.DEPTHS.children.MENU1.path}`,
-            },
 
-
-            {
-                name: "2 depths-1",
-                children: [
-                    {
-                        name: "3 depths-1",
-                        children: [
-                            {
-                                name: "menu4",
-                                link: `${ROUTES.DEPTHS.path}${ROUTES.DEPTHS.children.MENU4.path}`,
-                            },
-                            {
-                                name: "4 depths",
-                                children: [
-                                    {
-                                        name: "5 depths",
-                                        link: `${ROUTES.DEPTHS.path}${ROUTES.DEPTHS.children.MENU5.path}`,
-                                    }
-                                ],
-                            }
-                        ],
-                    },
-                    {
-                        name: "3 depths-2",
-                        children: [
-                            {
-                                name: "menu4",
-                                link: `${ROUTES.DEPTHS.path}${ROUTES.DEPTHS.children.MENU4.path}`,
-                            },
-                        ],
-                    },
-                ],
-            },
-
-
-
-            {
-                name: "2 depths-2",
-                children: [
-                    {
-                        name: "menu2 + detail",
-                        link: `${ROUTES.DEPTHS.path}${ROUTES.DEPTHS.children.MENU2.path}`,
-                        children: [
-                            {
-                                name: "detail page",
-                                link: `${ROUTES.DEPTHS.path}${ROUTES.DEPTHS.children.DETAIL_MENU.path}`,
-                                display: "none",
-                            },
-                        ]
-                    },
-
-                    {
-                        name: "menu3",
-                        link: `${ROUTES.DEPTHS.path}${ROUTES.DEPTHS.children.MENU3.path}`,
-                    },
-                    {
-                        name: "3 depths-1",
-                        children: [
-                            {
-                                name: "menu4",
-                                link: `${ROUTES.DEPTHS.path}${ROUTES.DEPTHS.children.MENU4.path}`,
-                            },
-                            {
-                                name: "4 depths-1",
-                                children: [
-                                    {
-                                        name: "5 depths",
-                                        link: `${ROUTES.DEPTHS.path}${ROUTES.DEPTHS.children.MENU5.path}`,
-                                    }
-                                ],
-                            }
-                        ],
-                    },
-                ],
-            },
-        ]
-    },
+export const LOGIN_PATH = `${ROUTES.PUBLIC.LOGIN}`;
+export const INDEX_PATH = `${ROUTES.PROTECTED.GUIDE}`;
+export const EXCLUDE_TOKEN_PATH = [
+    `${ROUTES.PUBLIC.LOGIN}`
 ];
+
+
+export const MENU_LIST =
+    [
+        {
+            menuId: "guide",
+            title: "가이드",
+            path: `${ROUTES.PROTECTED.GUIDE}`,
+        },
+        {
+            menuId: "detail-guide",
+            title: "상세 정보",
+            children: [
+                {
+                    menuId: "detail-guide-depths",
+                    title: "정보 내용",
+                    children: [
+                        {
+                            menuId: "search-table",
+                            title: "검색 테이블 정보",
+                            path: `${ROUTES.PROTECTED.SEARCH_TABLE}`,
+                        },
+                        {
+                            menuId: "modal",
+                            title: "모달 정보",
+                            path: `${ROUTES.PROTECTED.MODAL}`,
+                        },
+                        {
+                            menuId: "etc",
+                            title: "기타 정보",
+                            path: `${ROUTES.PROTECTED.ETC}`,
+                        },
+                        {
+                            menuId: "depths-inner",
+                            title: "메뉴 계층",
+                            children: [
+                                {
+                                    menuId: "menu5",
+                                    title: "기타 메뉴1",
+                                    path: `${ROUTES.PROTECTED.MENU5}`,
+                                    detail: {
+
+                                    },
+                                },
+                                {
+                                    menuId: "menu6",
+                                    title: "기타 메뉴2",
+                                    path: `${ROUTES.PROTECTED.MENU6}`,
+                                },
+                            ]
+                        }
+                    ]
+                },
+            ]
+        },
+    ]
+
 

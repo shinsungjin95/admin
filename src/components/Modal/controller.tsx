@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import {useRef} from "react";
 import { observer } from "mobx-react-lite";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useStore } from "@/store";

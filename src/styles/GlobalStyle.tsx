@@ -3,9 +3,6 @@ import {theme} from "./theme";
 import {reset} from "styled-reset";
 
 export const GlobalStyle = createGlobalStyle`
-    /* ================================
-        RESET & BASE
-    ================================= */
     ${reset}
     *, *::before, *::after {
         box-sizing: border-box;
@@ -23,7 +20,10 @@ export const GlobalStyle = createGlobalStyle`
     li::marker {
         content: "";
     }
-
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
     input,
     button,
     select,
@@ -37,7 +37,6 @@ export const GlobalStyle = createGlobalStyle`
         FORM BASE
     ================================= */
     select,
-    input,
     textarea {
         width: 100%;
         border-radius: 8px;
@@ -49,82 +48,19 @@ export const GlobalStyle = createGlobalStyle`
         }
     }
 
-    select,
-    input[type="text"],
-    input[type="password"] {
-        height: 44px;
+    select {
+        height: 36px;
         padding: 0 14px;
     }
 
     textarea {
         padding: 10px 14px;
     }
-
-    input[type="checkbox"],
-    input[type="radio"] {
-        margin: 0;
-        appearance: none;
-        position: relative;
-        cursor: pointer;
-    }
-
-    /* ================================
-        RADIO
-    ================================= */
-    input[type="radio"] {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-    }
-
-    input[type="radio"]:checked {
-        border-color: ${({theme}) => theme.colors.primary.main};
-    }
-
-    input[type="radio"]:checked::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: ${({theme}) => theme.colors.primary.main};
-        transform: translate(-50%, -50%);
-    }
-
-    /* ================================
-        CHECKBOX
-    ================================= */
-    input[type="checkbox"] {
-        width: 20px;
-        height: 20px;
-        border-radius: 4px;
-    }
-
-    input[type="checkbox"]:checked {
-        border-color: ${({theme}) => theme.colors.primary.main};
-    }
-
-    input[type="checkbox"]:checked::after {
-        content: "";
-        position: absolute;
-        top: 2px;
-        left: 6px;
-        width: 6px;
-        height: 12px;
-        border: solid ${({theme}) => theme.colors.primary.main};
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-    }
-
-    /* ================================
-        REACT SELECT
-    ================================= */
+    
     .custom-select {
 
         .react-select__control {
-            height: 44px;
+            height: 34px;
             border-radius: 6px;
             border: 1px solid ${({theme}) => theme.colors.palette.gray300};
             box-shadow: none;

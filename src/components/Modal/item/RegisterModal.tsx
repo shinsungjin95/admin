@@ -8,8 +8,9 @@ import {setToast} from "@/util/toast.ts";
 import {Dimmer, ModalHeader, ModalItem, ModalWrapper} from "../style.tsx";
 import {IoCloseOutline} from "react-icons/io5";
 import {theme} from "@styles/theme";
+import Input from "@components/Input";
 
-const TestModal = observer(({ onConfirm, onCancel, width, maxHeight, title, closeBtn, modalDepth, data }) => {
+const RegisterModal = observer(({ onConfirm, onCancel, width, maxHeight, title, closeBtn, modalDepth, data }) => {
     const {modalStore} = useStore();
     const [input, setInput] = useState<number | string>("")
     console.log(data, "data")
@@ -52,9 +53,10 @@ const TestModal = observer(({ onConfirm, onCancel, width, maxHeight, title, clos
                     <div className={"inner"}>
                         <p>테스트 모달 안에 내용</p>
                         <div className={"input-area"}>
-                            <input
-                                type={"text"}
+                            <Input
+                                inputType={"text"}
                                 value={input}
+                                placeholder={"텍스트를 입력해 주세요."}
                                 onChange={(e) => {
                                     setInput(e.target.value)
                                 }}
@@ -80,9 +82,9 @@ const TestModal = observer(({ onConfirm, onCancel, width, maxHeight, title, clos
                                     return;
                                 }
                                 modalStore.open(
-                                    MODAL_PAYLOAD.TEST_CONFIRM({
+                                    MODAL_PAYLOAD.BASIC_CONFIRM({
                                         props: {
-                                            message: `${input} 값으로 수정 하시겟습니까?`,
+                                            message: `${input} 값으로 입력 하시겟습니까?`,
                                             onConfirm: () => {
                                                 onConfirm({ value: "컨펌창 확인후 실행 시킨 컴포넌트에 데이터 전달" });
                                             },
@@ -115,4 +117,4 @@ const TestModalWrap = styled.div`
         gap: 10px;
     }
 `
-export default TestModal;
+export default RegisterModal;

@@ -3,10 +3,10 @@ import styled from "styled-components";
 import {theme} from "@/styles/theme";
 
 type CardSectionProps = {
-    title: string | null;
-    children: ReactNode | string | null;
+    title?: string | null;
+    children?: ReactNode | string | null;
 };
-const CardSection = ({title, children}: CardSectionProps) => {
+const CardTemplate = ({title, children}: CardSectionProps) => {
     return (
         <>
             <Section>
@@ -17,7 +17,7 @@ const CardSection = ({title, children}: CardSectionProps) => {
     );
 };
 
-export default CardSection;
+export default CardTemplate;
 
 const Section = styled.section``;
 

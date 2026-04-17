@@ -1,31 +1,16 @@
 const ROUTES = {
-    SETTING: {
-        path: "/",
+    PROTECTED: {
+        GUIDE: "/guide",
+        SEARCH_TABLE: "/info/search-table",
+        MODAL: "/info/modal",
+        ETC: "/info/etc",
+        MENU5: "/info/depths/menu5",
+        MENU6: "/info/depths/menu6",
+        MENU5_DETAIL: "/info/depths/menu5/:id",
     },
-    DEPTHS: {
-        path: "/depth",
-        children: {
-            MENU1: {
-                path: "/menu1",
-            },
-            MENU2: {
-                path: "/menu2",
-            },
-            MENU3: {
-                path: "/menu3",
-            },
-            MENU4: {
-                path: "/menu4",
-            },
-            MENU5: {
-                path: "/menu5",
-            },
-            DETAIL_MENU: {
-                path: "/detail/:id",
-            }
-        }
-
-    }
+    PUBLIC: {
+        LOGIN:"/member-login",
+    },
 };
 
 export default ROUTES;
