@@ -1,30 +1,14 @@
 import { makeAutoObservable } from "mobx";
 import api from "@/api";
 import {getStore, Store, useStore} from "@/store";
+import {EXAMPLE_DND_LIST_INIT} from "@/pages/protected/detail/contoller";
 
 
 export class ExampleStore {
     store: Store;
     list = [];
     totalCount = 0;
-    dndList = [
-        {
-            value: 1,
-            name: "first-item-wrap",
-            children: [
-                {value: 1, name: "f-item1"},
-                {value: 2, name: "f-item2"},
-            ],
-        },
-        {
-            value: 2,
-            name: "second-item-wrap",
-            children: [
-                {value: 1, name: "s-item1"},
-                {value: 2, name: "s-item2"},
-            ],
-        },
-    ]
+    dndList = EXAMPLE_DND_LIST_INIT;
 
     constructor(store: Store) {
         this.store = store;
@@ -45,6 +29,11 @@ export class ExampleStore {
     setDataClear() {
         this.list = [];
         this.totalCount = 0;
+    }
+
+
+    setEtcDataClear() {
+        this.dndList = EXAMPLE_DND_LIST_INIT;
     }
 
 

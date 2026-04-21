@@ -730,14 +730,13 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
-axios@^1.14.1:
-  version "1.14.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.14.1.tgz#2553649f2322049666871cea80a5d0d6adc700ca"
-  integrity sha512-vF/aB4vrIzLyOb2TB9gpuE8gusNHpZqk2ZZcAqSnRjW5IcY7tFSBEurD2tbakohj0Rw5xMHYwjSqOGSfr0iewA==
+axios@^1.15.1:
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.15.1.tgz#075420b785da8adbdf545785b69f90c926b28542"
+  integrity sha512-WOG+Jj8ZOvR0a3rAn+Tuf1UQJRxw5venr6DgdbJzngJE3qG7X0kL83CZGpdHMxEm+ZK3seAbvFsw4FfOfP9vxg==
   dependencies:
     follow-redirects "^1.15.11"
     form-data "^4.0.5"
-    plain-crypto-js "^4.2.1"
     proxy-from-env "^2.1.0"
 
 babel-plugin-macros@^3.1.0:
@@ -1670,11 +1669,6 @@ picomatch@^4.0.3, picomatch@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-4.0.4.tgz#fd6f5e00a143086e074dffe4c924b8fb293b0589"
   integrity sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==
-
-plain-crypto-js@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/plain-crypto-js/-/plain-crypto-js-4.2.1.tgz#07d889e2dadce6f3910dcbc253317d28ca61c766"
-  integrity sha512-Wv41p4/aEMq03JjDqi0JxPYT4aoMbbQMSM8ur4QkjvjGEeuYvI7rGkqLcOZ7K1iThQGvpNvJnxRWcNodCNuEEQ==
 
 postcss-value-parser@^4.0.2:
   version "4.2.0"

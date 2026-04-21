@@ -15,6 +15,26 @@ export const datePickerInitVal = {
 }
 
 
+export const EXAMPLE_DND_LIST_INIT = [
+    {
+        value: 1,
+        name: "first-item-wrap",
+        children: [
+            {value: 1, name: "f-item1"},
+            {value: 2, name: "f-item2"},
+        ],
+    },
+    {
+        value: 2,
+        name: "second-item-wrap",
+        children: [
+            {value: 1, name: "s-item1"},
+            {value: 2, name: "s-item2"},
+        ],
+    },
+]
+
+
 export const SEARCH_FIELDS = [
     {
         type: "input",
