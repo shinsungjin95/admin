@@ -37,30 +37,6 @@ declare module "styled-components" {
                 sidebarBG: string;
                 bodyBG: string;
             };
-
-            text: {
-                primary: string;
-                secondary: string;
-                muted: string;
-                inverse: string;
-            };
-
-            bg: {
-                default: string;
-                subtle: string;
-                dark: string;
-            };
-
-            action: {
-                primary: string;
-                danger: string;
-                disabled: string;
-            };
-
-            border: {
-                default: string;
-                strong: string;
-            };
         };
 
         fonts: {

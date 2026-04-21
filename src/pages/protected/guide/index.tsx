@@ -24,6 +24,11 @@ const Guide = () => {
                         기타
                     </Link>
                 </Button>
+                <Button>
+                    <Link to={"https://github.com/shinsungjin95/admin"} target="_blank" rel="noopener noreferrer">
+                        project git hub
+                    </Link>
+                </Button>
             </GuideInner>
         </CardSection>
     )

@@ -1,9 +1,33 @@
 import React, {useState} from "react";
 import {IoIosEye, IoIosEyeOff} from "react-icons/io";
-import {observer} from "mobx-react";
 import {InputWrapper} from "@components/Input/style.tsx";
 
-const Input = observer((
+
+type InputProps = {
+    placeholder?: string;
+    id?: string;
+    inputType?: string;
+    value?: string | number;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    label?: string;
+    name?: string;
+    autoFocus?: boolean;
+    disabled?: boolean;
+    readOnly?: boolean;
+    checked?: boolean;
+    autoComplete?: string;
+    typeChange?: string;
+    maxlength?: number;
+    height?: string;
+    onEyes?: "on" | "off";
+    setTypeChange?: (type: string) => void;
+};
+
+const Input: React.FC<InputProps> = (
     {
         placeholder,
         id,
@@ -80,7 +104,7 @@ const Input = observer((
             }
         </InputWrapper>
     );
-});
+};
 
 
 

@@ -14,7 +14,7 @@ export const Table = styled.table<{ $type: string }>`
             return `
                 th {
                     font-weight: 500;
-                    background: ${theme.colors.palette.gray100};
+                    background: ${theme.colors.palette.gray400};
                     font-size: 13px;
                     height: 44px;
                 }
@@ -42,7 +42,7 @@ export const Table = styled.table<{ $type: string }>`
 
                 th {
                     width: 220px;
-                    background: ${theme.colors.bg?.subtle || theme.colors.palette.gray100};
+                    background: ${theme.colors.palette.gray400};
                     font-weight: 600;
                 }
 
@@ -74,7 +74,7 @@ export const InputChecked = styled.div`
         align-items: center;
         gap: 6px;
         cursor: pointer;
-        color: ${({theme}) => theme.colors.text.primary};
+        color: ${({theme}) => theme.colors.palette.brand900};
 
         input {
             margin: 0;
