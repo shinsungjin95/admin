@@ -68,11 +68,9 @@ const SideNav = observer(() => {
                                     </div>
                                 </div>
                             ) : (
-                                <div className={"item-wrap"}>
-                                    <Link to={item.path}>
-                                        <span className={"title"}>{item.title}</span>
-                                    </Link>
-                                </div>
+                                <Link to={item.path} className={"item-wrap"}>
+                                    <span className={"title"}>{item.title}</span>
+                                </Link>
                             )}
                         </div>
                         {children.length > 0 && isOpen && (
