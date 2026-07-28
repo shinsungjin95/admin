@@ -7,26 +7,28 @@ import ROUTES from "@/constants/routes.ts";
 
 const Guide = () => {
     return(
-        <CardSection title="상세 내용 바로가기">
-            <GuideInner>
-                <Button as={Link} to={ROUTES.PROTECTED.SEARCH_TABLE}>
-                    검색 테이블
-                </Button>
-
-
-                <Button as={Link} to={`${ROUTES.PROTECTED.MODAL}`}>
-                    모달
-                </Button>
-
-                <Button as={Link} to={`${ROUTES.PROTECTED.ETC}`}>
-                    기타
-                </Button>
-
-                <Button as={Link} to={"https://github.com/shinsungjin95/admin"} target="_blank" rel="noopener noreferrer">
-                    project git hub
-                </Button>
-            </GuideInner>
-        </CardSection>
+        <>
+            <CardSection title="프로젝트 아키텍처 및 가이드">
+                <GuideInner>
+                    <Button as={Link} to={"https://github.com/shinsungjin95/admin"} target="_blank" rel="noopener noreferrer">
+                        project git hub
+                    </Button>
+                </GuideInner>
+            </CardSection>
+            <CardSection title="상세 내용 바로가기">
+                <GuideInner>
+                    <Button as={Link} to={ROUTES.PROTECTED.SEARCH_TABLE}>
+                        검색 테이블
+                    </Button>
+                    <Button as={Link} to={`${ROUTES.PROTECTED.MODAL}`}>
+                        모달
+                    </Button>
+                    <Button as={Link} to={`${ROUTES.PROTECTED.ETC}`}>
+                        기타
+                    </Button>
+                </GuideInner>
+            </CardSection>
+        </>
     )
 };
 

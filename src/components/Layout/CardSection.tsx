@@ -19,7 +19,11 @@ const CardTemplate = ({title, children}: CardSectionProps) => {
 
 export default CardTemplate;
 
-const Section = styled.section``;
+const Section = styled.section`
+    & + section {
+        margin-top: 50px;
+    }
+`;
 
 const Title = styled.h2`
     color: ${theme.colors.gray.black};
