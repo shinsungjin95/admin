@@ -34,6 +34,27 @@ export const MENU_LIST =
             path: `${ROUTES.PROTECTED.GUIDE}`,
         },
         {
+            menuId: "homepage-setting",
+            title: "홈페이지 관리",
+            children: [
+                {
+                    menuId: "menu",
+                    title: "메뉴 관리",
+                    path: `${ROUTES.PROTECTED.HOME_PAGE_MENU}`,
+                },
+                {
+                    menuId: "content",
+                    title: "컨텐츠 관리",
+                    children: [],
+                },
+                {
+                    menuId: "banner",
+                    title: "배너 관리",
+                    path: `${ROUTES.PROTECTED.HOME_PAGE_BANNER}`,
+                },
+            ]
+        },
+        {
             menuId: "detail-guide",
             title: "상세 정보",
             children: [
@@ -41,6 +62,11 @@ export const MENU_LIST =
                     menuId: "detail-guide-depths",
                     title: "정보 내용",
                     children: [
+                        {
+                            menuId: "etc",
+                            title: "홈페이지 메뉴 세팅",
+                            path: `${ROUTES.PROTECTED.ETC}`,
+                        },
                         {
                             menuId: "search-table",
                             title: "검색 테이블 정보",
@@ -50,11 +76,6 @@ export const MENU_LIST =
                             menuId: "modal",
                             title: "모달 정보",
                             path: `${ROUTES.PROTECTED.MODAL}`,
-                        },
-                        {
-                            menuId: "etc",
-                            title: "기타 정보",
-                            path: `${ROUTES.PROTECTED.ETC}`,
                         },
                         {
                             menuId: "depths-inner",

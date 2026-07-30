@@ -1,16 +1,38 @@
 import type {ReactNode} from "react";
 import styled from "styled-components";
 import {theme} from "@/styles/theme";
+import Button from "@components/Button";
 
 type CardSectionProps = {
     title?: string | null;
+    useButton?: {
+        name: string;
+        function: () => void;
+    }
     children?: ReactNode | string | null;
 };
-const CardTemplate = ({title, children}: CardSectionProps) => {
+const CardTemplate = ({
+                          title,
+                          useButton = undefined,
+                          children
+}: CardSectionProps) => {
     return (
         <>
             <Section>
-                <Title>{title}</Title>
+                <Title>
+                    {title}
+                    {
+                        useButton &&
+                        <Button
+                            size={"sm"}
+                            onClick={() => {
+                                useButton.function()
+                            }}
+                        >
+                            {useButton.name}
+                        </Button>
+                    }
+                </Title>
                 <Content>{children}</Content>
             </Section>
         </>
@@ -20,6 +42,7 @@ const CardTemplate = ({title, children}: CardSectionProps) => {
 export default CardTemplate;
 
 const Section = styled.section`
+    position: relative;
     & + section {
         margin-top: 50px;
     }
@@ -30,6 +53,9 @@ const Title = styled.h2`
     font-size: 20px;
     margin-bottom: 20px;
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 `;
 
 const Content = styled.div`

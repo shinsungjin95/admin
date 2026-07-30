@@ -17,8 +17,8 @@ const SideNav = observer(() => {
     const { menuStore } = useStore();
     const {pathname} = useLocation();
     const [openIndexes, setOpenIndexes] = useState([]);
-    const depth1Menu = getMenu(menuStore.menuData);
-    const currentMenu = findMenuByPath(menuStore.menuData, pathname);
+    const depth1Menu = getMenu(menuStore.currentMenuData);
+    const currentMenu = findMenuByPath(menuStore.currentMenuData, pathname);
     const isActive = (menuId) => currentMenu?.menuId === menuId;
     useEffect(() => {
         if (!currentMenu) return;
@@ -44,7 +44,7 @@ const SideNav = observer(() => {
     const renderMenu = (menus, parentKey = "") => {
         return menus.map((item, idx) => {
             const key = parentKey ? `${parentKey}-${idx}` : `${idx}`;
-            const children = getMenu(menuStore.menuData, item.menuId);
+            const children = getMenu(menuStore.currentMenuData, item.menuId);
             const isOpen = openIndexes.includes(key);
             const active = isActive(item.menuId);
             const depth = key.split("-").length;

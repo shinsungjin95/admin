@@ -1,3 +1,49 @@
+import ROUTES from "@/constants/routes.ts";
+
+
+export const getFetchMenu = async () => {
+    try {
+        const res = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL}menus`
+        );
+        if (!res.ok) {
+            throw new Error("메뉴 조회 실패");
+        }
+        const navigation = await res.json();
+        if(!navigation.success){
+            throw new Error("메뉴 조회 실패");
+        }
+        return navigation.data;
+    } catch (e) {
+        console.error(e);
+        return [];
+    }
+};
+
+export const convertMenu = (menus: any[]): any[] => {
+    return menus.map((menu) => {
+        const params = new URLSearchParams({
+            menuId: menu.id,
+            ...(menu.type && { type: menu.type }),
+            ...(menu.subtype && { subtype: menu.subtype }),
+        });
+
+        return {
+            menuId: menu.id,
+            title: menu.title,
+            ...(menu.children?.length
+                ? {
+                    children: convertMenu(menu.children),
+                }
+                : {
+                    path: `${ROUTES.PROTECTED.HOME_PAGE_CONTENT}?${params.toString()}`,
+                }),
+        };
+    });
+};
+
+
+
 
 export const getMenu = (menu, menuId = null) => {
     if (!menuId) {

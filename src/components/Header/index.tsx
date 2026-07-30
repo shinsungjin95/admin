@@ -11,7 +11,7 @@ import {COOKIE_NAME} from "@/constants";
 const Header = observer(() => {
     const {menuStore, userStore} = useStore();
     const {pathname} = useLocation();
-    const currentDepths = findMenuByPath(menuStore.menuData, pathname, true);
+    const currentDepths = findMenuByPath(menuStore.currentMenuData, pathname, true);
     const [cookies, setCookie, removeCookie] = useCookies([COOKIE_NAME]);
     const logOut = async () => {
         try {

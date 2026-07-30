@@ -15,7 +15,14 @@ const Guide = () => {
                     </Button>
                 </GuideInner>
             </CardSection>
-            <CardSection title="상세 내용 바로가기">
+            <CardSection title="홈페이지 메뉴 구성">
+                <GuideInner>
+                    <Button as={Link} to={ROUTES.PROTECTED.SEARCH_TABLE}>
+                       메뉴 세팅
+                    </Button>
+                </GuideInner>
+            </CardSection>
+            <CardSection title="컴포넌트 상세">
                 <GuideInner>
                     <Button as={Link} to={ROUTES.PROTECTED.SEARCH_TABLE}>
                         검색 테이블

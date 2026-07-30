@@ -6,6 +6,7 @@ import PublicOnly from "@routes/auth/PublicOnly.tsx";
 import {INDEX_PATH} from "@/constants";
 
 
+
 // 에러 / 404
 const ErrorPage = lazy(() => import("@/pages/error/ErrorPage.tsx"));
 const NotFoundPage = lazy(() => import("@/pages/error/NotFoundPage.tsx"));
@@ -13,6 +14,9 @@ const ForbiddenPage = lazy(() => import("@/pages/error/ForbiddenPage.tsx"));
 
 // protected
 const Root = lazy(() => import("@/routes/Root.tsx"));
+const HomePageMenuSetting = lazy(() => import("@/pages/protected/homepage/menu"));
+const HomePageContentSetting = lazy(() => import("@/pages/protected/homepage/menu"));
+const HomePageBannerSetting = lazy(() => import("@/pages/protected/homepage/banner"));
 const Guide = lazy(() => import("@/pages/protected/guide"));
 const SearchTable = lazy(() => import("@/pages/protected/detail/SearchTable.tsx"));
 const ModalInfo = lazy(() => import("@/pages/protected/detail/ModalInfo.tsx"));
@@ -45,6 +49,22 @@ const router = createBrowserRouter([
                             />
                         ),
                     },
+
+
+                    {
+                        path: `${ROUTES.PROTECTED.HOME_PAGE_MENU}`,
+                        element: <HomePageMenuSetting />,
+                    },
+                    {
+                        path: `${ROUTES.PROTECTED.HOME_PAGE_CONTENT}`,
+                        element: <HomePageContentSetting />,
+                    },
+                    {
+                        path: `${ROUTES.PROTECTED.HOME_PAGE_BANNER}`,
+                        element: <HomePageBannerSetting />,
+                    },
+
+
                     {
                         path: `${ROUTES.PROTECTED.GUIDE}`,
                         element: <Guide />,
