@@ -1,34 +1,57 @@
 import CardSection from "@/components/Layout/CardSection.tsx";
-import DragDropList from "@components/DragAndDrop";
 import {observer} from "mobx-react";
 import {useStore} from "@/store";
-import React, {useEffect} from "react";
+import React from "react";
 import styled from "styled-components";
-import { nanoid } from "nanoid";
+import Button from "@components/Button";
+import MenuTreeViewList from "@/pages/protected/homepage/menu/controller/MenuTreeViewList.tsx";
 
 const HomePageMenuSetting = observer(() => {
     const { menuStore } = useStore();
 
-
-    const saveButton = () => {
-        const id = nanoid();
-        console.log(id);
-    }
-    const menuButtonObject = {
-        name: "저장하기",
-        function: saveButton,
-    }
     return (
-        <CardSection title="메뉴 설정" useButton={menuButtonObject}>
-            <MenuSettingWrap>
-                <DragDropList items={menuStore.navigationData}  />
-            </MenuSettingWrap>
-        </CardSection>
+        <MenuSettingWrap>
+            <CardSection title="메뉴 설정">
+                <MenuSettingWrap>
+                    <MenuTreeViewList items={menuStore.navigationData}  />
+                </MenuSettingWrap>
+            </CardSection>
+            <div className={"title-btn-wrap"}>
+                <Button
+                    size={"sm"}
+                    outlined
+                    onClick={() => {
+                        menuStore.setAddListData({
+                            type: "parent",
+                            value: ""
+                        })
+                    }}
+                >
+                    메뉴 추가
+                </Button>
+                <Button
+                    size={"sm"}
+                    onClick={() => {
+                        menuStore.setSaveButton()
+                    }}
+                >
+                    메뉴 저장
+                </Button>
+            </div>
+        </MenuSettingWrap>
     );
 });
 
 const MenuSettingWrap = styled.div`
-    
+    position: relative;
+    .title-btn-wrap{
+        position: absolute;
+        top: -10px;
+        right: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 `
 
 export default HomePageMenuSetting;
