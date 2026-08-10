@@ -9,13 +9,13 @@ import {MODAL_PAYLOAD} from "@/constants/Modal.ts";
 import {setToast} from "@/util/toast.ts";
 
 const HomePageMenuSetting = observer(() => {
-    const { menuStore, modalStore } = useStore();
+    const {menuStore, modalStore} = useStore();
 
     return (
         <MenuSettingWrap>
             <CardSection title="메뉴 설정">
                 <MenuSettingWrap>
-                    <MenuTreeViewList items={menuStore.navigationData} />
+                    <MenuTreeViewList items={menuStore.navigationData}/>
                 </MenuSettingWrap>
             </CardSection>
             <div className={"title-btn-wrap"}>
@@ -42,8 +42,26 @@ const HomePageMenuSetting = observer(() => {
                 </Button>
                 <Button
                     size={"sm"}
-                    onClick={() => {
-                        menuStore.setSaveButton()
+                    onClick={async () => {
+                        try {
+                            modalStore.open(
+                                MODAL_PAYLOAD.BASIC_CONFIRM({
+                                    props: {
+                                        message: `홈페이지에 즉시 반영됩니다.\n진행 하시겟습니까?`,
+                                        onConfirm: async () => {
+                                            const response = await menuStore.setSaveButton();
+                                            if(response.data.success){
+                                                menuStore.setCurrentMenu(response.data.data);
+                                                setToast("success", "반영 되었습니다.");
+                                            }
+
+                                        },
+                                    },
+                                })
+                            );
+                        } catch (e) {
+                            console.log(e);
+                        }
                     }}
                 >
                     메뉴 저장
@@ -55,7 +73,8 @@ const HomePageMenuSetting = observer(() => {
 
 const MenuSettingWrap = styled.div`
     position: relative;
-    .title-btn-wrap{
+
+    .title-btn-wrap {
         position: absolute;
         top: -10px;
         right: 0;

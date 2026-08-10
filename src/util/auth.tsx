@@ -1,7 +1,8 @@
-import { useCookies } from "react-cookie";
-import {COOKIE_NAME} from "@/constants";
+import { Cookies } from "react-cookie";
+import { COOKIE_NAME } from "@/constants";
+
+const cookies = new Cookies();
 
 export const getToken = () => {
-    const [cookies] = useCookies([COOKIE_NAME]);
-    return cookies[COOKIE_NAME];
+    return cookies.get(COOKIE_NAME);
 };

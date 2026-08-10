@@ -3,6 +3,7 @@ import {getStore, Store, useStore} from "@/store";
 import {convertMenu} from "@/util/menu.ts";
 import {MENU_LIST} from "@/constants";
 import {nanoid} from "nanoid";
+import api from "@/api";
 
 export interface MenuItem {
     id: string;
@@ -28,24 +29,21 @@ export class MenuStore {
         this.store = store;
         makeAutoObservable(this, {}, {autoBind: true});
         if (initialNavigation) {
-
-            // console.log(JSON.stringify(initialNavigation.navigation))
             this.navigationData = initialNavigation.navigation;
-            this.currentMenuData = MENU_LIST.map((menu) => {
-                if (menu.menuId !== "homepage-setting") return menu;
-                return {
-                    ...menu,
-                    children: menu.children?.map((child) =>
-                        child.menuId === "content"
-                            ? {
-                                ...child,
-                                children: convertMenu(initialNavigation.navigation),
-                            }
-                            : child
-                    ),
-                };
-            });
+            this.setCurrentMenu(initialNavigation.navigation);
         }
+    }
+
+    setCurrentMenu(list: MenuItem[]) {
+        this.currentMenuData = MENU_LIST.map((menu) => {
+            if (menu.menuId !== "homepage-setting") return menu;
+            return {
+                ...menu,
+                children: menu.children?.map((child) =>
+                    child.menuId === "content" ? {...child, children: convertMenu(list),} : child
+                ),
+            };
+        });
     }
 
     /**
@@ -147,8 +145,8 @@ export class MenuStore {
 
 
 
-    setSaveButton() {
-        console.log(this.navigationData)
+    async setSaveButton() {
+       return await api.post("menus", this.navigationData);
     }
 
 
