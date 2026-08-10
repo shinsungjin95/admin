@@ -27,4 +27,17 @@ export const Item = styled.div<{ $dragging?: boolean; $child?: boolean; }>`
 export const ItemMain = styled.div`
     cursor: grab;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .inner{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .btn-wrap{
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
 `;

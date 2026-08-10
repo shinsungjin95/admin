@@ -2,18 +2,27 @@ import {makeAutoObservable} from "mobx";
 import {getStore, Store, useStore} from "@/store";
 import {convertMenu} from "@/util/menu.ts";
 import {MENU_LIST} from "@/constants";
-import React from "react";
 import {nanoid} from "nanoid";
+
+export interface MenuItem {
+    id: string;
+    type: string;
+    title: string;
+    subtype?: string;
+    children?: MenuItem[];
+}
+
+type AddMenuData = {
+    parentId?: string | null;
+    title: string;
+};
+
+
 
 export class MenuStore {
     store: Store;
     currentMenuData = [];
     navigationData = [];
-    newMenuData = {
-        parentId: null,
-        type: "",
-        value: "",
-    }
 
     constructor(store: Store, initialNavigation?: any) {
         this.store = store;
@@ -39,41 +48,107 @@ export class MenuStore {
         }
     }
 
-    setAddListData (data) {
-        if (!data) return;
-        this.newMenuData = data;
-    }
-
-    setAddMenu(type?: string) {
-        if (type === "parent") {
+    /**
+     * 메뉴 추가
+     */
+    setAddMenu(data: AddMenuData) {
+        if (!data.parentId) {
             this.navigationData = [
                 ...this.navigationData,
                 {
                     id: nanoid(),
                     type: "parent",
-                    title: this.newMenuData.value,
+                    title: data.title,
                     children: [],
                 },
             ];
+
+            return;
         }
-        this.setClearAddMenuData();
+        this.navigationData = this.navigationData.map((parent) => {
+            if (parent.id !== data.parentId) {
+                return parent;
+            }
+            return {
+                ...parent,
+                children: [
+                    ...(parent.children ?? []),
+
+                    {
+                        id: nanoid(),
+                        type: "board",
+                        title: data.title,
+                        subtype: "list",
+                    },
+                ],
+            };
+        });
     }
 
-    setAddMenuValue(value: string) {
-        this.newMenuData.value = value;
+    setModifyMenu(data: {
+        targetId: string;
+        deleType?: boolean;
+        title?: string;
+        subtype?: string;
+    }) {
+        const modifyMenu = (items: MenuItem[]): MenuItem[] => {
+
+            // 삭제
+            if (data.deleType) {
+                return items
+                    .filter((item) => item.id !== data.targetId)
+                    .map((item) => {
+                        if (item.children?.length) {
+                            return {
+                                ...item,
+                                children: modifyMenu(item.children),
+                            };
+                        }
+
+                        return item;
+                    });
+            }
+
+            // 수정
+            return items.map((item) => {
+
+                if (item.id === data.targetId) {
+                    const modifyItem = {
+                        ...item,
+                        title: data.title,
+                    };
+
+                    if (data.subtype) {
+                        modifyItem.subtype = data.subtype;
+                    }
+
+                    return modifyItem;
+                }
+
+                if (item.children?.length) {
+                    return {
+                        ...item,
+                        children: modifyMenu(item.children),
+                    };
+                }
+
+                return item;
+            });
+        };
+
+        this.navigationData = modifyMenu(this.navigationData);
     }
 
-    setClearAddMenuData() {
-        this.newMenuData = {
-            parentId: null,
-            type: "",
-            value: "",
-        }
+
+    setNavigationData(data: MenuItem[]) {
+        this.navigationData = data;
     }
+
+
 
 
     setSaveButton() {
-
+        console.log(this.navigationData)
     }
 
 

@@ -5,15 +5,17 @@ import React from "react";
 import styled from "styled-components";
 import Button from "@components/Button";
 import MenuTreeViewList from "@/pages/protected/homepage/menu/controller/MenuTreeViewList.tsx";
+import {MODAL_PAYLOAD} from "@/constants/Modal.ts";
+import {setToast} from "@/util/toast.ts";
 
 const HomePageMenuSetting = observer(() => {
-    const { menuStore } = useStore();
+    const { menuStore, modalStore } = useStore();
 
     return (
         <MenuSettingWrap>
             <CardSection title="메뉴 설정">
                 <MenuSettingWrap>
-                    <MenuTreeViewList items={menuStore.navigationData}  />
+                    <MenuTreeViewList items={menuStore.navigationData} />
                 </MenuSettingWrap>
             </CardSection>
             <div className={"title-btn-wrap"}>
@@ -21,10 +23,19 @@ const HomePageMenuSetting = observer(() => {
                     size={"sm"}
                     outlined
                     onClick={() => {
-                        menuStore.setAddListData({
-                            type: "parent",
-                            value: ""
-                        })
+                        modalStore.open(
+                            MODAL_PAYLOAD.MENU_SETTING_MODAL({
+                                props: {
+                                    title: "대메뉴 이름 설정",
+                                    onConfirm: (data?: string) => {
+                                        menuStore.setAddMenu({
+                                            title: data,
+                                        });
+                                        setToast("success", "추가 되었습니다.");
+                                    },
+                                },
+                            })
+                        );
                     }}
                 >
                     메뉴 추가

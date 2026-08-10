@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-import {nanoid} from "nanoid";
+import React from "react";
 import {
     DragDropContext,
     Droppable,
@@ -13,8 +12,15 @@ import {
 } from "@components/DragAndDrop/style";
 import {observer} from "mobx-react";
 import {useStore} from "@/store";
-import Input from "@components/Input";
+import {FaPlus} from "react-icons/fa6";
+import {MODAL_PAYLOAD} from "@/constants/Modal.ts";
+import Button from "@components/Button";
+import styled from "styled-components";
+import {IoListOutline} from "react-icons/io5";
+import {BsCardText} from "react-icons/bs";
+import {TfiLayoutListThumb} from "react-icons/tfi";
 import {setToast} from "@/util/toast.ts";
+import {theme} from "@styles/theme";
 
 export interface MenuItem {
     id: string;
@@ -24,10 +30,10 @@ export interface MenuItem {
     children?: MenuItem[];
 }
 
-type Props = {
+type MenuTreeViewListProps = {
     items: MenuItem[];
-    onChange: (items: MenuItem[]) => void;
 };
+
 
 const reorder = <T, >(
     list: T[],
@@ -42,189 +48,43 @@ const reorder = <T, >(
 
 
 const MenuTreeViewList = observer(({
-                                       items,
-                                       onChange,
-                                   }: Props) => {
-    const {menuStore} = useStore();
-    const [addingParent, setAddingParent] = useState(false);
-    const [addingChildParentId, setAddingChildParentId] = useState<string | null>(null);
-    const [inputValue, setInputValue] = useState("");
-    // const addParent = () => {
-    //     if (!inputValue.trim()) {
-    //         setAddingParent(false);
-    //         setInputValue("");
-    //         return;
-    //     }
-    //     onChange([
-    //         ...items,
-    //         {
-    //             id: nanoid(),
-    //             type: "parent",
-    //             title: inputValue,
-    //             children: [],
-    //         },
-    //     ]);
-    //
-    //     setInputValue("");
-    //     setAddingParent(false);
-    // };
-
-    const addChild = () => {
-
-        if (!addingChildParentId) return;
-
-        if (!inputValue.trim()) {
-            setAddingChildParentId(null);
-            setInputValue("");
-            return;
-        }
-
-        const next = items.map((parent) => {
-
-            if (parent.id !== addingChildParentId)
-                return parent;
-
-            return {
-                ...parent,
-                children: [
-                    ...(parent.children || []),
-                    {
-                        id: nanoid(),
-                        type: "board",
-                        title: inputValue,
-                        subtype: "",
-                    },
-                ],
-            };
-        });
-
-        onChange(next);
-
-        setAddingChildParentId(null);
-        setInputValue("");
-    };
-
-    // const handleKeyDown = (
-    //     e: React.KeyboardEvent<HTMLInputElement>
-    // ) => {
-    //
-    //     if (e.key === "Escape") {
-    //
-    //         setAddingParent(false);
-    //         setAddingChildParentId(null);
-    //         setInputValue("");
-    //
-    //         return;
-    //     }
-    //
-    //     if (e.key !== "Enter") return;
-    //
-    //     if (addingParent) {
-    //         addParent();
-    //         return;
-    //     }
-    //
-    //     if (addingChildParentId) {
-    //         addChild();
-    //     }
-    // };
-
-    // const cancelInput = () => {
-    //
-    //     setAddingParent(false);
-    //     setAddingChildParentId(null);
-    //     setInputValue("");
-    // };
+                                       items
+                                   }: MenuTreeViewListProps) => {
+    const {menuStore, modalStore} = useStore();
 
     const handleDragEnd = ({
                                source,
                                destination,
-                           }: any) => {
+                           }) => {
 
         if (!destination) return;
-
-        if (
-            source.droppableId === destination.droppableId &&
-            source.index === destination.index
-        ) {
-            return;
-        }
-
-        /**
-         * Parent 이동
-         */
-        if (
-            source.droppableId === "root" &&
-            destination.droppableId === "root"
-        ) {
-
+        if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+        if (source.droppableId === "root" && destination.droppableId === "root") {
             const next = reorder(
                 items,
                 source.index,
                 destination.index
             );
-
-            onChange(next);
-
+            menuStore.setNavigationData(next);
             return;
         }
-
-        /**
-         * Parent -> Child 금지
-         */
-        if (
-            source.droppableId === "root" &&
-            destination.droppableId !== "root"
-        ) {
-            return;
-        }
-
-        /**
-         * Child 이동
-         */
-
-        const sourceParentIndex =
-            items.findIndex(
-                item => item.id === source.droppableId
-            );
-
-        const destParentIndex =
-            items.findIndex(
-                item => item.id === destination.droppableId
-            );
-
-        if (
-            sourceParentIndex === -1 ||
-            destParentIndex === -1
-        ) {
-            return;
-        }
-
-        const next = items.map(parent => ({
+        if (source.droppableId === "root" && destination.droppableId !== "root") return;
+        const sourceParentIndex = items.findIndex((item) => item.id === source.droppableId);
+        const destParentIndex = items.findIndex((item) => item.id === destination.droppableId);
+        if (sourceParentIndex === -1 || destParentIndex === -1) return;
+        const next = items.map((parent) => ({
             ...parent,
-            children: [...(parent.children || [])],
+            children: [...(parent.children ?? [])],
         }));
-
-        const [moved] =
-            next[sourceParentIndex].children!.splice(
-                source.index,
-                1
-            );
-
-        next[destParentIndex]
-            .children!
-            .splice(
-                destination.index,
-                0,
-                moved
-            );
-
-        onChange(next);
+        const [moved] = next[sourceParentIndex].children!.splice(source.index, 1);
+        next[destParentIndex].children!.splice(destination.index, 0, moved);
+        menuStore.setNavigationData(next);
     };
+
     return (
         <>
             <DragDropContext onDragEnd={handleDragEnd}>
-                <Droppable droppableId={"root"} type={"root"} key={menuStore.newMenuData}>
+                <Droppable droppableId={"root"} type={"root"}>
                     {(provided) => {
                         return (
                             <List ref={provided.innerRef} {...provided.droppableProps}>
@@ -240,30 +100,81 @@ const MenuTreeViewList = observer(({
                                                 {...dragProvided.draggableProps}
                                                 $dragging={snapshot.isDragging}
                                             >
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        justifyContent: "space-between",
-                                                        alignItems: "center",
-                                                    }}
-                                                >
-
+                                                <MainItemWrap>
                                                     <ItemMain {...dragProvided.dragHandleProps}>
                                                         {parent.title}
                                                     </ItemMain>
-
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setAddingChildParentId(parent.id);
-                                                            setInputValue("");
-                                                        }}
-                                                    >
-                                                        +
-                                                    </button>
-
-                                                </div>
-
+                                                    <div className={"btn-wrap"}>
+                                                        <Button
+                                                            size={"xsm"}
+                                                            outlined
+                                                            onClick={() => {
+                                                                modalStore.open(
+                                                                    MODAL_PAYLOAD.MENU_SETTING_MODAL({
+                                                                        props: {
+                                                                            title: `${parent.title} 하위 메뉴 설정`,
+                                                                            onConfirm: (data?: string) => {
+                                                                                menuStore.setAddMenu({
+                                                                                    title: data,
+                                                                                    parentId: parent.id,
+                                                                                });
+                                                                                setToast("success", "추가 되었습니다.");
+                                                                            },
+                                                                        },
+                                                                    })
+                                                                );
+                                                            }}
+                                                        >
+                                                            <FaPlus/>
+                                                        </Button>
+                                                        <Button
+                                                            size={"xsm"}
+                                                            onClick={() => {
+                                                                console.log(parent)
+                                                                modalStore.open(
+                                                                    MODAL_PAYLOAD.MENU_SETTING_MODAL({
+                                                                        props: {
+                                                                            title: `메뉴 이름 변경`,
+                                                                            data: parent.title,
+                                                                            onConfirm: (data?: string) => {
+                                                                                menuStore.setModifyMenu({
+                                                                                    targetId: parent.id,
+                                                                                    title: data
+                                                                                });
+                                                                                setToast("success", "변경 되었습니다.");
+                                                                            },
+                                                                        },
+                                                                    })
+                                                                );
+                                                            }}
+                                                        >
+                                                            설정
+                                                        </Button>
+                                                        <Button
+                                                            size={"xsm"}
+                                                            color={theme.colors.palette.warn}
+                                                            outlined
+                                                            onClick={() => {
+                                                                modalStore.open(
+                                                                    MODAL_PAYLOAD.BASIC_CONFIRM({
+                                                                        props: {
+                                                                            message: `${parent.title} 삭제시 하위 데이터 및\n연결된 데이터는 모두 삭제 됩니다.\n진행 하시겟습니까?`,
+                                                                            onConfirm: () => {
+                                                                                menuStore.setModifyMenu({
+                                                                                    targetId: parent.id,
+                                                                                    deleType: true,
+                                                                                });
+                                                                                setToast("success", "삭제 되었습니다.");
+                                                                            },
+                                                                        },
+                                                                    })
+                                                                );
+                                                            }}
+                                                        >
+                                                            삭제
+                                                        </Button>
+                                                    </div>
+                                                </MainItemWrap>
                                                 <Droppable droppableId={parent.id} type={"child"}>
                                                     {(childProvided, childSnap) => (
                                                         <List
@@ -286,25 +197,76 @@ const MenuTreeViewList = observer(({
                                                                             $child={true}
                                                                         >
                                                                             <ItemMain {...cProvided.dragHandleProps}>
-                                                                                {child.title}
-
+                                                                                <div className={"inner"}>
+                                                                                    <p>
+                                                                                        {
+                                                                                            {
+                                                                                                list: <IoListOutline/>,
+                                                                                                card: <BsCardText/>,
+                                                                                                thumb:
+                                                                                                    <TfiLayoutListThumb/>,
+                                                                                            }[child.subtype]
+                                                                                        }
+                                                                                    </p>
+                                                                                    {child.title}
+                                                                                </div>
+                                                                                <div className={"btn-wrap"}>
+                                                                                    <Button
+                                                                                        size={"xsm"}
+                                                                                        onClick={() => {
+                                                                                            modalStore.open(
+                                                                                                MODAL_PAYLOAD.MENU_SETTING_MODAL({
+                                                                                                    props: {
+                                                                                                        title: `${child.title} 메뉴 설정`,
+                                                                                                        boardType: child.subtype,
+                                                                                                        data: child.title,
+                                                                                                        onConfirm: (data?: {
+                                                                                                            title: string;
+                                                                                                            boardType: string;
+                                                                                                        }) => {
+                                                                                                            menuStore.setModifyMenu({
+                                                                                                                targetId: child.id,
+                                                                                                                title: data.title,
+                                                                                                                subtype: data.boardType,
+                                                                                                            });
+                                                                                                            setToast("success", "변경 되었습니다.");
+                                                                                                        },
+                                                                                                    },
+                                                                                                })
+                                                                                            );
+                                                                                        }}
+                                                                                    >
+                                                                                        설정
+                                                                                    </Button>
+                                                                                    <Button
+                                                                                        size={"xsm"}
+                                                                                        color={theme.colors.palette.warn}
+                                                                                        outlined
+                                                                                        onClick={() => {
+                                                                                            modalStore.open(
+                                                                                                MODAL_PAYLOAD.BASIC_CONFIRM({
+                                                                                                    props: {
+                                                                                                        message: `${child.title} 삭제시 연결된 데이터는 모두 삭제 됩니다.\n진행 하시겟습니까?`,
+                                                                                                        onConfirm: () => {
+                                                                                                            menuStore.setModifyMenu({
+                                                                                                                targetId: child.id,
+                                                                                                                deleType: true,
+                                                                                                            });
+                                                                                                            setToast("success", "삭제 되었습니다.");
+                                                                                                        },
+                                                                                                    },
+                                                                                                })
+                                                                                            );
+                                                                                        }}
+                                                                                    >
+                                                                                        삭제
+                                                                                    </Button>
+                                                                                </div>
                                                                             </ItemMain>
                                                                         </Item>
                                                                     )}
                                                                 </Draggable>
                                                             ))}
-                                                            {/*{*/}
-                                                            {/*    addingChildParentId === parent.id && (*/}
-                                                            {/*        <input*/}
-                                                            {/*            autoFocus*/}
-                                                            {/*            value={inputValue}*/}
-                                                            {/*            onChange={(e) => setInputValue(e.target.value)}*/}
-                                                            {/*            onKeyDown={handleKeyDown}*/}
-                                                            {/*            onBlur={cancelInput}*/}
-                                                            {/*            placeholder="하위 메뉴"*/}
-                                                            {/*        />*/}
-                                                            {/*    )*/}
-                                                            {/*}*/}
                                                             {childProvided.placeholder}
                                                         </List>
                                                     )}
@@ -314,42 +276,6 @@ const MenuTreeViewList = observer(({
                                     </Draggable>
                                 ))}
                                 {provided.placeholder}
-                                {
-                                    menuStore.newMenuData &&
-                                    menuStore.newMenuData.type === "parent" &&
-                                    // (
-                                    //     <input
-                                    //         autoFocus
-                                    //         value={inputValue}
-                                    //         onChange={(e) => setInputValue(}
-                                    //         onKeyDown={handleKeyDown}
-                                    //         onBlur={cancelInput}
-                                    //         placeholder="메뉴 이름"
-                                    //     />
-                                    // )
-                                    <Input
-                                        autoFocus
-                                        inputType={"text"}
-                                        value={menuStore.newMenuData.value}
-                                        placeholder={"메뉴 이름을 입력해 주세요."}
-                                        onChange={(e) => {
-                                            menuStore.setAddMenuValue(e.target.value);
-                                        }}
-                                        onKeyDown={(e) => {
-                                            if (e.key === "Escape") {
-                                                menuStore.setClearAddMenuData();
-                                                return;
-                                            }
-                                            if (e.key !== "Enter") return;
-                                            if(!menuStore.newMenuData.value){
-                                                setToast("warning", "한글자 이상 입력해 주세요.");
-                                                return;
-                                            }
-                                            menuStore.setAddMenu("parent");
-                                        }}
-                                        onBlur={menuStore.setClearAddMenuData}
-                                    />
-                                }
                             </List>
                         );
                     }}
@@ -359,5 +285,18 @@ const MenuTreeViewList = observer(({
 
     );
 });
+
+
+const MainItemWrap = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .btn-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+`
 
 export default MenuTreeViewList;

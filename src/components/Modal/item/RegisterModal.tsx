@@ -12,8 +12,7 @@ import Input from "@components/Input";
 
 const RegisterModal = observer(({ onConfirm, onCancel, width, maxHeight, title, closeBtn, modalDepth, data }) => {
     const {modalStore} = useStore();
-    const [input, setInput] = useState<number | string>("")
-    console.log(data, "data")
+    const [input, setInput] = useState<number | string>("");
 
     const closeFunc = () => {
         if (input !== "") {

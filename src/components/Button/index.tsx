@@ -121,7 +121,7 @@ const ButtonWrapper = styled.button<ButtonStyleProps>`
     background-color: ${({ $outlined, disabled, $bgColor }) => {
     if (disabled) return theme.colors.gray[100];
     if (!$outlined) return $bgColor;
-    return "transparent";
+    return theme.colors.palette.white;
 }};
 
     color: ${({ $outlined, disabled, $color }) => {

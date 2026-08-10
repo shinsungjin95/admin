@@ -47,7 +47,7 @@ export const ModalWrapper = styled.div<{ $modalDepth?: number | string, }>`
 
 export const ConfirmComponent = styled.div<{ $modalDepth?: number | string, }>`
     background-color: #fff;
-    width: 320px;
+    width: 420px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -61,6 +61,7 @@ export const ConfirmComponent = styled.div<{ $modalDepth?: number | string, }>`
     align-content: center;
     flex-direction: column;
     justify-content: space-between;
+    gap: 10px;
     z-index: ${({ $modalDepth }) => {
         if (typeof $modalDepth === "number") {
             return `${$modalDepth + 1}`;
@@ -70,7 +71,7 @@ export const ConfirmComponent = styled.div<{ $modalDepth?: number | string, }>`
     .confirm-message{
         font-weight: 500;
         font-size: 15px;
-        line-height: 22px;
+        line-height: 25px;
         color: ${theme.colors.palette.layoutDark};
         letter-spacing: -0.01em;
         text-align: center;

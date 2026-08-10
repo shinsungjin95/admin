@@ -1,4 +1,3 @@
-// theme.js
 const TEXT_BASE = "#13293D";
 
 const palette = {
