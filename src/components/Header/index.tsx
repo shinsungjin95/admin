@@ -7,9 +7,12 @@ import {useStore} from "@/store";
 import {setToast} from "@/util/toast.ts";
 import {useCookies} from "react-cookie";
 import {COOKIE_NAME} from "@/constants";
+import { useNavigate } from "react-router-dom";
+import {LOGIN_PATH} from "@/constants";
 
 const Header = observer(() => {
     const {menuStore, userStore} = useStore();
+        const navigate = useNavigate();
     const {pathname} = useLocation();
     const currentDepths = findMenuByPath(menuStore.currentMenuData, pathname, true);
     const [cookies, setCookie, removeCookie] = useCookies([COOKIE_NAME]);
@@ -17,6 +20,7 @@ const Header = observer(() => {
         try {
             if (cookies[COOKIE_NAME]) {
                 await userStore.setLogout(removeCookie);
+                navigate(`${LOGIN_PATH}`, { replace: true });
             }
         } catch (e) {
             setToast("warning", e)

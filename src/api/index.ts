@@ -3,7 +3,7 @@ import {getToken} from "@/util/auth.tsx";
 import {getLoadingStore} from "@/store/loading";
 import {getGlobalNavigate} from "@/util";
 import {setToast} from "@/util/toast.ts";
-import {EXCLUDE_TOKEN_PATH} from "@/constants";
+import {EXCLUDE_TOKEN_PATH, LOGIN_PATH} from "@/constants";
 
 let delayTimer: ReturnType<typeof setTimeout> | null = null;
 const DELAY = 500;
@@ -23,7 +23,7 @@ instance.interceptors.request.use(
         const token = getToken();
         const isExcluded = EXCLUDE_TOKEN_PATH.find((url) => config.url.includes(url));
         if (token && !isExcluded) {
-            config.headers.authorization = token;
+            config.headers.Authorization = `Bearer ${token}`;
         }
         getLoadingStore().startLoading();
         if (!delayTimer) {
@@ -58,15 +58,13 @@ instance.interceptors.response.use(
             }
         }
         let errorData = {
-            code: error.code || "UNKNOWN",
             status: res?.status,
-            message: error.message || "알 수 없는 오류입니다.",
+            message: res.data.message || "알 수 없는 오류입니다.",
         };
         if(res){
             if(res.status === 401) {
                 const navigate = getGlobalNavigate();
-                navigate('/error?status=401');
-                // error?status=401 만료된 토큰 에러 페이지로 보내기
+                navigate(`${LOGIN_PATH}`);
             }else {
                 setToast("error", errorData.message)
             }

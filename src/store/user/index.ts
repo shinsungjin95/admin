@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import {getStore, Store, useStore} from "@/store";
 import {COOKIE_NAME} from "@/constants";
+import api from "@/api";
 
 export class UserStore {
     store: Store;
@@ -11,14 +12,8 @@ export class UserStore {
         makeAutoObservable(this, {}, { autoBind: true });
     }
 
-    async setLogin(setCookie) {
-        const randomToken = Math.random().toString(36).substring(2);
-        const expires = new Date();
-        expires.setHours(expires.getHours() + 1);
-        setCookie(COOKIE_NAME, randomToken, {
-            path: "/",       // 전체 경로에서 사용
-            expires,         // 만료시간
-        });
+    async setLogin(payload) {
+        return await api.post("/auth/login", payload);
     }
 
     async setLogout(removeCookie) {

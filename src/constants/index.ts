@@ -22,7 +22,7 @@ export const TOAST_OPTIONS = {
 export const LOGIN_PATH = `${ROUTES.PUBLIC.LOGIN}`;
 export const INDEX_PATH = `${ROUTES.PROTECTED.GUIDE}`;
 export const EXCLUDE_TOKEN_PATH = [
-    `${ROUTES.PUBLIC.LOGIN}`
+"/auth/login",
 ];
 
 

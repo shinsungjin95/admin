@@ -9,28 +9,38 @@ import {useCookies} from "react-cookie";
 import {COOKIE_NAME} from "@/constants";
 import {ButtonWrap, NoticeBox} from "@styles/CommonStyle.tsx";
 import Button from "@components/Button";
+import { useNavigate } from "react-router-dom";
 
 
 const MemberLogin = observer(() => {
     const {userStore} = useStore();
-
+    const navigate = useNavigate();
     const [passwordState, setPasswordState] = useState("password");
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [cookies, setCookie] = useCookies(COOKIE_NAME);
 
 
-    const loginSubmit = async () => {
-        const payLoad = chkIdPw();
-        if (!payLoad) return;
-        try {
-            if(!cookies[COOKIE_NAME]){
-                await userStore.setLogin(setCookie);
-            }
-        } catch (e) {
-            setToast("warning", e)
-        }
-    };
+const loginSubmit = async () => {
+    const payLoad = chkIdPw();
+    if (!payLoad) return;
+
+    try {
+        const response = await userStore.setLogin(payLoad);
+
+        const expires = new Date();
+        expires.setHours(expires.getHours() + 5);
+
+        setCookie(COOKIE_NAME, response.data.token, {
+            path: "/",
+            expires,
+        });
+        navigate("/", { replace: true });
+
+    } catch (e) {
+        setToast("warning", e.message);
+    }
+};
     const chkIdPw = () => {
         if (id === "") {
             setToast("warning", "아이디를 확인해 주세요.")
