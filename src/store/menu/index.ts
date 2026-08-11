@@ -142,12 +142,10 @@ export class MenuStore {
         this.navigationData = data;
     }
 
-
-
-
     async setSaveButton() {
        return await api.post("menus", this.navigationData);
     }
+
 
 
 }

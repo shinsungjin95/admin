@@ -1,22 +1,21 @@
 import CardSection from "@/components/Layout/CardSection.tsx";
-import DragDropList from "@components/DragAndDrop";
 import {observer} from "mobx-react";
 import {useStore} from "@/store";
 import {useEffect} from "react";
+import { useSearchParams } from "react-router-dom";
 
 
 const HomePageContentSetting = observer(() => {
-    const { exampleStore } = useStore();
+    const [searchParams] = useSearchParams();
 
-    useEffect(() => {
-        return(() => {
-            exampleStore.setEtcDataClear();
-        });
-    }, []);
+    const menuId = searchParams.get("menuId");
+    console.log(menuId, "123")
+
+
 
     return (
         <CardSection title="Dnd 리스트 사용 예시">
-            <DragDropList items={exampleStore.dndList} onChange={exampleStore.setReOrderDndList} />
+            asdsadsadsadsadasdsadasdasd
         </CardSection>
     );
 });

@@ -1,7 +1,7 @@
 import CardSection from "@/components/Layout/CardSection.tsx";
 import {observer} from "mobx-react";
 import {useStore} from "@/store";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Button from "@components/Button";
 import MenuTreeViewList from "@/pages/protected/homepage/menu/controller/MenuTreeViewList.tsx";
@@ -10,6 +10,7 @@ import {setToast} from "@/util/toast.ts";
 
 const HomePageMenuSetting = observer(() => {
     const {menuStore, modalStore} = useStore();
+
 
     return (
         <MenuSettingWrap>

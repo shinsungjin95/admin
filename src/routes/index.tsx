@@ -15,7 +15,7 @@ const ForbiddenPage = lazy(() => import("@/pages/error/ForbiddenPage.tsx"));
 // protected
 const Root = lazy(() => import("@/routes/Root.tsx"));
 const HomePageMenuSetting = lazy(() => import("@/pages/protected/homepage/menu"));
-const HomePageContentSetting = lazy(() => import("@/pages/protected/homepage/menu"));
+const HomePageContentSetting = lazy(() => import("@/pages/protected/homepage/content"));
 const HomePageBannerSetting = lazy(() => import("@/pages/protected/homepage/banner"));
 const Guide = lazy(() => import("@/pages/protected/guide"));
 const SearchTable = lazy(() => import("@/pages/protected/detail/SearchTable.tsx"));
