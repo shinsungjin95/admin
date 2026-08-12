@@ -67,27 +67,34 @@ export const getMenu = (menu, menuId = null) => {
 };
 
 
-export const findMenuByPath = (
+export const findCurrentMenu  = (
     menus,
     pathname,
+    menuId = null,
     breadcrumb = false,
     parents = []
 ) => {
     for (const item of menus) {
         const newParents = [...parents, item];
-        if (item.path === pathname) {
+        if (menuId && item.menuId === menuId) {
+            return breadcrumb ? newParents : item;
+        }
+        if (!menuId && item.path === pathname) {
             return breadcrumb ? newParents : item;
         }
         if (item.children) {
-            const found = findMenuByPath(
+            const found = findCurrentMenu (
                 item.children,
                 pathname,
+                menuId,
                 breadcrumb,
                 newParents
             );
+
             if (found) return found;
         }
     }
+
     return null;
 };
 

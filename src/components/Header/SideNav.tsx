@@ -1,9 +1,9 @@
 import { observer } from "mobx-react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { useStore } from "@/store";
-import { getMenu, findMenuByPath, findActiveKeys } from "@/util/menu.ts";
+import { getMenu, findCurrentMenu, findActiveKeys } from "@/util/menu.ts";
 import { theme } from "@/styles/theme";
 import styled from "styled-components";
 const paddingMap = {
@@ -18,18 +18,26 @@ const SideNav = observer(() => {
     const {pathname} = useLocation();
     const [openIndexes, setOpenIndexes] = useState([]);
     const depth1Menu = getMenu(menuStore.currentMenuData);
-    const currentMenu = findMenuByPath(menuStore.currentMenuData, pathname);
+    const [searchParams] = useSearchParams();
+    const menuId = searchParams.get("menuId");
+    const currentMenu = findCurrentMenu(
+        menuStore.currentMenuData,
+        pathname,
+        menuId
+    );
     const isActive = (menuId) => currentMenu?.menuId === menuId;
     useEffect(() => {
         if (!currentMenu) return;
+
         const activeKeys = findActiveKeys(
             depth1Menu,
             currentMenu.menuId
         );
+
         if (activeKeys) {
             setOpenIndexes(activeKeys);
         }
-    }, [pathname]);
+    }, [pathname, menuId]);
 
     const toggleIndex = (key) => {
         setOpenIndexes((prev) => {

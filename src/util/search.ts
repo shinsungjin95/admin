@@ -70,3 +70,18 @@ export const cleanParams = (init) => {
         }).map(([key, val]) => [key, String(val)])
     );
 };
+
+export const createParams = (
+    data,
+    keyMap
+) => {
+    const params = new URLSearchParams(data);
+
+    Object.entries(keyMap).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== "") {
+            params.set(key, String(value));
+        }
+    });
+
+    return params;
+};

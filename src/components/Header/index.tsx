@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import {useLocation} from "react-router-dom";
+import {useLocation, useSearchParams} from "react-router-dom";
 import {observer} from "mobx-react";
 import {theme} from "@styles/theme";
-import {findMenuByPath} from "@/util/menu.ts";
+import {findCurrentMenu } from "@/util/menu.ts";
 import {useStore} from "@/store";
 import {setToast} from "@/util/toast.ts";
 import {useCookies} from "react-cookie";
@@ -12,9 +12,16 @@ import {LOGIN_PATH} from "@/constants";
 
 const Header = observer(() => {
     const {menuStore, userStore} = useStore();
-        const navigate = useNavigate();
-    const {pathname} = useLocation();
-    const currentDepths = findMenuByPath(menuStore.currentMenuData, pathname, true);
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const [searchParams] = useSearchParams();
+    const queryMenuId = searchParams.get("menuId");
+    const currentDepths = findCurrentMenu (
+        menuStore.currentMenuData,
+        pathname,
+        queryMenuId,
+        true
+    );
     const [cookies, setCookie, removeCookie] = useCookies([COOKIE_NAME]);
     const logOut = async () => {
         try {

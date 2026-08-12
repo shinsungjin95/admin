@@ -7,6 +7,11 @@ import { ExampleStore } from "./example";
 import { LoadingStore } from "./loading";
 import { MenuStore } from "./menu";
 
+
+import { ContentStore } from "./homepage/contentStore";
+import { BannerStore } from "./homepage/bannerStore";
+
+
 type InitialState = Record<string, unknown>;
 type StoreProviderProps = {
     children: ReactNode;
@@ -20,6 +25,8 @@ export class Store {
     exampleStore: ExampleStore;
     loadingStore: LoadingStore;
     menuStore: MenuStore;
+    contentStore: ContentStore;
+    bannerStore: BannerStore;
 
     constructor(initialState?: InitialState) {
         this.modalStore = new ModalStore(this);
@@ -27,6 +34,8 @@ export class Store {
         this.exampleStore = new ExampleStore(this);
         this.loadingStore = new LoadingStore(this);
         this.menuStore = new MenuStore(this, initialState);
+        this.contentStore = new ContentStore(this);
+        this.bannerStore = new BannerStore(this);
     }
 }
 

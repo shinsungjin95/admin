@@ -36,6 +36,7 @@ export const ListTable = ({
                               columns,
                               rows,
                               renderCell,
+                              onRowClick = undefined,
                           }) => {
     return(
         <Table $type={"list"}>
@@ -49,9 +50,9 @@ export const ListTable = ({
             </tr>
             </thead>
             <tbody>
-            {rows.length ? (
+            {rows && rows.length ? (
                 rows.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
+                    <tr key={rowIndex} onClick={() => onRowClick?.(row)} className={`${onRowClick ? "hover" : null}`}>
                         {columns.map((col) => (
                             <td key={col.key} style={{textAlign: col.align || "center"}}>
                                 {renderCell ? renderCell(row, rowIndex, col) : row[col.key]}

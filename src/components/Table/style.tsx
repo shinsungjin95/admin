@@ -12,6 +12,19 @@ export const Table = styled.table<{ $type: string }>`
     ${({$type}) => {
         if ($type === "list") {
             return `
+
+                tbody{
+                    tr{
+                        &.hover{
+                            cursor: pointer;
+                            &:hover{
+                                background: ${theme.colors.palette.brand700};
+                                color: ${theme.colors.palette.white};
+                            }
+                        }
+                    }
+                }
+
                 th {
                     font-weight: 500;
                     background: ${theme.colors.palette.gray400};

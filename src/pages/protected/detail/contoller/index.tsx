@@ -101,8 +101,9 @@ export const SEARCH_FIELDS = [
         name: "range",
         initialValue: datePickerInitVal,
     },
-
 ];
+
+
 export const EX_INIT_FORM = {
     name: "",
     info: "",

@@ -16,6 +16,10 @@ const ForbiddenPage = lazy(() => import("@/pages/error/ForbiddenPage.tsx"));
 const Root = lazy(() => import("@/routes/Root.tsx"));
 const HomePageMenuSetting = lazy(() => import("@/pages/protected/homepage/menu"));
 const HomePageContentSetting = lazy(() => import("@/pages/protected/homepage/content"));
+const HomePageContentDetail = lazy(() => import("@/pages/protected/homepage/content/detail"));
+
+
+
 const HomePageBannerSetting = lazy(() => import("@/pages/protected/homepage/banner"));
 const Guide = lazy(() => import("@/pages/protected/guide"));
 const SearchTable = lazy(() => import("@/pages/protected/detail/SearchTable.tsx"));
@@ -50,7 +54,6 @@ const router = createBrowserRouter([
                         ),
                     },
 
-
                     {
                         path: `${ROUTES.PROTECTED.HOME_PAGE_MENU}`,
                         element: <HomePageMenuSetting />,
@@ -59,6 +62,11 @@ const router = createBrowserRouter([
                         path: `${ROUTES.PROTECTED.HOME_PAGE_CONTENT}`,
                         element: <HomePageContentSetting />,
                     },
+                    {
+                        path: `${ROUTES.PROTECTED.HOME_PAGE_CONTENT_detail}`,
+                        element: <HomePageContentDetail />,
+                    },
+
                     {
                         path: `${ROUTES.PROTECTED.HOME_PAGE_BANNER}`,
                         element: <HomePageBannerSetting />,
