@@ -19,7 +19,7 @@ export class ContentStore {
         makeAutoObservable(this, {}, {autoBind: true});
     }
 
-    async getFetchTable(params: URLSearchParams) {
+    async getContentTable(params: URLSearchParams) {
         const search = new URLSearchParams(params);
         const paramsOffset = search.get("offset");
         if(paramsOffset){
@@ -40,7 +40,6 @@ export class ContentStore {
 
     async getContentDetialData(detailId) {
         const response = await api.get(`contents/detail?detailId=${detailId}`);
-
         if (response.data.success) {
             runInAction(() => {
                 this.contentData = {
@@ -52,12 +51,9 @@ export class ContentStore {
             });
         }
     }
-    async setContentData(
-        menuId: string,
-        detailId: string | null = null
-    ) {
-        const formData = new FormData();
 
+    async setContentData(menuId: string, detailId: string | null = null) {
+        const formData = new FormData();
         formData.append("menuId", menuId);
         formData.append("title", this.contentData.title);
         formData.append("content", this.contentData.content);
@@ -65,11 +61,7 @@ export class ContentStore {
         // 수정일 때만
         if (detailId) {
             formData.append("detailId", detailId);
-
-            formData.append(
-                "existingImages",
-                JSON.stringify(this.contentData.images)
-            );
+            formData.append("existingImages", JSON.stringify(this.contentData.images));
         }
 
         // 신규/수정 둘 다 새로 선택한 파일 전송
@@ -78,25 +70,22 @@ export class ContentStore {
         });
 
         const config = {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
+            headers: {"Content-Type": "multipart/form-data"}
         };
-
         if (detailId) {
-            return await api.patch(
-                "contents/detail",
-                formData,
-                config
-            );
+            return await api.patch("contents/detail", formData, config);
         }
-
-        return await api.post(
-            "contents",
-            formData,
-            config
-        );
+        return await api.post("contents", formData, config);
     }
+
+
+    async setDeleteContent(idx) {
+        const ids = idx.map((index) => {
+            return this.contentList[index]["id"];
+        });
+        return await api.delete("contents", {data: {ids: ids}});
+    }
+
 
 
     setContentListDataClear() {

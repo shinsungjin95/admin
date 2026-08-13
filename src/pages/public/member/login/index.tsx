@@ -27,16 +27,13 @@ const loginSubmit = async () => {
 
     try {
         const response = await userStore.setLogin(payLoad);
-
         const expires = new Date();
         expires.setHours(expires.getHours() + 5);
-
         setCookie(COOKIE_NAME, response.data.token, {
             path: "/",
             expires,
         });
         navigate("/", { replace: true });
-
     } catch (e) {
         setToast("warning", e.message);
     }

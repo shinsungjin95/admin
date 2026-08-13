@@ -25,10 +25,9 @@ const MenuSettingModal = ({
     const boardTypeOptions = [
         { value: "list"},
         { value: "card"},
-        { value: "thumb"},
+        { value: "blog"},
     ]
 
-    console.log(boardTypeData)
 
     return (
         <ModalWrapper

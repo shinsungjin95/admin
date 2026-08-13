@@ -5,6 +5,18 @@ const datePickerInitVal = {
     endDate: moment().format("YYYY-MM-DD"),
 }
 
+export const getContentLimit = (subtype) => {
+    switch (subtype) {
+        case "card":
+            return 9;
+
+        case "blog":
+            return 5;
+
+        default:
+            return 10;
+    }
+};
 
 export const CONTENT_INIT_FORM = {
     title: "",
@@ -32,8 +44,22 @@ export const CONTENT_SEARCH_FIELDS = [
 
 
 export const CONTENT_LIST_COLUMN = [
+    { key: "checked", width: 20 },
     { key: "no", header: "No", width: 20 },
     { key: "title", header: "제목", width: 120 },
     { key: "image", header: "이미지", width: 50 },
     { key: "updated_at", header: "등록 날짜", width: 50 },
 ];
+
+export const getContentColumns = (subtype) => {
+    if (subtype === "card" || subtype === "blog") {
+        return [
+            { key: "checked", className: "checked" },
+            { key: "image"},
+            { key: "title", header: "제목", className: "title"},
+            { key: "updated_at", header: "등록 날짜", className: "date"},
+        ];
+    }
+
+    return CONTENT_LIST_COLUMN;
+};

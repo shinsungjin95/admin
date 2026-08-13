@@ -66,7 +66,7 @@ instance.interceptors.response.use(
                 const navigate = getGlobalNavigate();
                 navigate(`${LOGIN_PATH}`);
             }else {
-                setToast("error", errorData.message)
+                setToast("error",  "알 수 없는 오류입니다.")
             }
         }
         return Promise.reject(errorData);

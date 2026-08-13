@@ -22,6 +22,9 @@ export const Table = styled.table<{ $type: string }>`
                                 color: ${theme.colors.palette.white};
                             }
                         }
+                        label{
+                            justify-content: center;
+                        }
                     }
                 }
 
@@ -30,6 +33,9 @@ export const Table = styled.table<{ $type: string }>`
                     background: ${theme.colors.palette.gray400};
                     font-size: 13px;
                     height: 44px;
+                    label{
+                        justify-content: center;
+                    }
                 }
 
                 td {
@@ -67,6 +73,80 @@ export const Table = styled.table<{ $type: string }>`
         }
     }}
 `;
+
+export const CustomListWrap = styled.div`
+    &.card {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;   
+    }
+    &.blog{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        .items{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            .checked {
+                flex: 0 0 30px;
+                margin-bottom: 0;
+            }
+            > div:nth-child(2) {
+                flex: 0 0 15%;
+
+                img {
+                    width: 100%;
+                    height: 100px;
+                    object-fit: cover;
+                }
+            }
+            .title{
+                flex: 1 1 0;
+                padding: 0 30px;
+            }
+            .date {
+                flex: 0 0 180px;
+            }
+        }
+    }
+    .items {
+        width: 100%;
+        min-width: 0;
+        overflow: hidden;
+        box-sizing: border-box;
+        padding: 20px;
+        border: 1px solid ${theme.colors.palette.brand700};
+        border-radius: 10px;
+        &.hover{
+            cursor: pointer;
+            &:hover{
+                background: ${theme.colors.palette.brand700};
+                color: ${theme.colors.palette.white};
+            }
+        }
+        > div {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .title{
+            padding: 15px 0;
+        }
+        img {
+            display: block;
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .checked{
+            margin-bottom: 10px;
+        }
+    }
+`
+
 
 export const SelectInputField = styled.div`
     display: flex;
@@ -111,7 +191,7 @@ export const TablePageNationWrap = styled.div`
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-top: 15px;
+    margin-top: 30px;
     .control-btn{
         cursor: pointer;
         width: 25px;

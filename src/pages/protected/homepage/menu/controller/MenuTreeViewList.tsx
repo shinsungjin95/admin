@@ -203,7 +203,7 @@ const MenuTreeViewList = observer(({
                                                                                             {
                                                                                                 list: <IoListOutline/>,
                                                                                                 card: <BsCardText/>,
-                                                                                                thumb:
+                                                                                                blog:
                                                                                                     <TfiLayoutListThumb/>,
                                                                                             }[child.subtype]
                                                                                         }
