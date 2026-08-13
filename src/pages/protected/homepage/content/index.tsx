@@ -150,7 +150,7 @@ const HomePageContentSetting = observer(() => {
 
     const setListDeleteFunc = () => {
         if(checkedList.length === 0){
-            setToast("warning", "하나 이상 선택 헤주세요.");
+            setToast("warning", "선택후 사용해 주세요.");
             return;
         }
         modalStore.open(

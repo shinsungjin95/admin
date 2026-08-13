@@ -65,7 +65,7 @@ instance.interceptors.response.use(
             if(res.status === 401) {
                 const navigate = getGlobalNavigate();
                 navigate(`${LOGIN_PATH}`);
-            }else {
+            }else if(res.status !== 400) {
                 setToast("error",  "알 수 없는 오류입니다.")
             }
         }
