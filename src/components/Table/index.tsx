@@ -38,7 +38,7 @@ export const ListTable = ({
     renderCell,
     onRowClick = undefined,
     checkedList = [],
-    onCheckedAll,
+    onCheckedAll = undefined,
 }) => {
     const hasCheckedColumn = columns.some(
         (col) => col.key === "checked"
@@ -71,7 +71,7 @@ export const ListTable = ({
             </thead>
 
             <tbody>
-                {rows && rows.length ? (
+                {rows && rows.length > 0 ? (
                     rows.map((row, rowIndex) => (
                         <tr key={rowIndex}  onClick={() => onRowClick?.(row)} className={`${onRowClick ? "hover" : ""}`}>
                             {columns.map((col) => (
@@ -105,19 +105,23 @@ export const CustomList = (({
     }) => {
         return(
         <CustomListWrap className={className}>
-            {rows && rows.length ? (
-                rows.map((row, rowIndex) => (
-                    <div key={rowIndex} onClick={() => onRowClick?.(row)} className={`items ${onRowClick ? "hover" : null}`}>
-                        {columns.map((col) => (
-                            <div key={col.key} className={`${col.className ? col.className : ""}`}>
-                                {
-                                    col.header && <>{col.header}: </>
-                                }
-                                {renderCell ? renderCell(row, rowIndex, col) : row[col.key]}
-                            </div>
-                        ))}
-                    </div>
-                ))
+            {rows && rows.length > 0 ? (
+                <div className={"list-inner"}>
+                    {
+                    rows.map((row, rowIndex) => (
+                        <div key={rowIndex} onClick={() => onRowClick?.(row)} className={`items ${onRowClick ? "hover" : null}`}>
+                            {columns.map((col) => (
+                                <div key={col.key} className={`${col.className ? col.className : ""}`}>
+                                    {
+                                        col.header && <>{col.header}: </>
+                                    }
+                                    {renderCell ? renderCell(row, rowIndex, col) : row[col.key]}
+                                </div>
+                            ))}
+                        </div>
+                    ))
+                    }
+                </div>
             ) : (
                 <div>
                     데이터가 없습니다

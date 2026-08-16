@@ -43,62 +43,17 @@ export const MENU_LIST =
                     path: `${ROUTES.PROTECTED.HOME_PAGE_MENU}`,
                 },
                 {
-                    menuId: "content",
-                    title: "컨텐츠 관리",
-                    children: [],
-                },
-                {
                     menuId: "banner",
                     title: "배너 관리",
                     path: `${ROUTES.PROTECTED.HOME_PAGE_BANNER}`,
                 },
             ]
         },
+        
         {
-            menuId: "detail-guide",
-            title: "상세 정보",
-            children: [
-                {
-                    menuId: "detail-guide-depths",
-                    title: "정보 내용",
-                    children: [
-                        {
-                            menuId: "etc",
-                            title: "홈페이지 메뉴 세팅",
-                            path: `${ROUTES.PROTECTED.ETC}`,
-                        },
-                        {
-                            menuId: "search-table",
-                            title: "검색 테이블 정보",
-                            path: `${ROUTES.PROTECTED.SEARCH_TABLE}`,
-                        },
-                        {
-                            menuId: "modal",
-                            title: "모달 정보",
-                            path: `${ROUTES.PROTECTED.MODAL}`,
-                        },
-                        {
-                            menuId: "depths-inner",
-                            title: "메뉴 계층",
-                            children: [
-                                {
-                                    menuId: "menu5",
-                                    title: "기타 메뉴1",
-                                    path: `${ROUTES.PROTECTED.MENU5}`,
-                                    detail: {
-
-                                    },
-                                },
-                                {
-                                    menuId: "menu6",
-                                    title: "기타 메뉴2",
-                                    path: `${ROUTES.PROTECTED.MENU6}`,
-                                },
-                            ]
-                        }
-                    ]
-                },
-            ]
+            menuId: "homepage-content-setting",
+            title: "홈페이지 컨텐츠 관리",
+            children: [],
         },
     ]
 

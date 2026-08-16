@@ -114,98 +114,107 @@ const handleCheck = (index) => {
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >
-                                {items.map((item, index) => (
-                                    <Draggable
-                                        key={String(item.id)}
-                                        draggableId={String(item.id)}
-                                        index={index}
-                                    >
-                                        {(provided, snapshot) => (
-                                            <BannerRow
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                $isDragging={snapshot.isDragging}
-                                            >
-                                                <td
-                                                    className="drag"
-                                                    {...provided.dragHandleProps}
+                                {
+                                    items && items.length > 0 ? 
+                                    items.map((item, index) => (
+                                        <Draggable
+                                            key={String(item.id)}
+                                            draggableId={String(item.id)}
+                                            index={index}
+                                        >
+                                            {(provided, snapshot) => (
+                                                <BannerRow
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    $isDragging={snapshot.isDragging}
                                                 >
-                                                    <IoMenu size={22}/>
-                                                </td>
-                                                <td>
-                                                    <Input
-                                                        inputType={"checkbox"}
-                                                        checked={checkedList.includes(index)}
-                                                        onChange={() => handleCheck(index)}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <img src={item.image?.url} alt={item.title} />
-                                                </td>
-                                                <td className={"banner-title"}>
-                                                    {item.title}
-                                                </td>
-                                                <td>
-                                                    <ToggleSwitch>
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={item.active}
-                                                            onChange={async (e) => {
-                                                                const active = e.target.checked;
+                                                    <td
+                                                        className="drag"
+                                                        {...provided.dragHandleProps}
+                                                    >
+                                                        <IoMenu size={22}/>
+                                                    </td>
+                                                    <td>
+                                                        <Input
+                                                            inputType={"checkbox"}
+                                                            checked={checkedList.includes(index)}
+                                                            onChange={() => handleCheck(index)}
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <img src={item.image?.url} alt={item.title} />
+                                                    </td>
+                                                    <td className={"banner-title"}>
+                                                        {item.title}
+                                                    </td>
+                                                    <td>
+                                                        <ToggleSwitch>
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={item.active}
+                                                                onChange={async (e) => {
+                                                                    const active = e.target.checked;
 
-                                                                try {
-                                                                    const response = await bannerStore.setBannerActive(
-                                                                        item.id,
-                                                                        active
-                                                                    );
+                                                                    try {
+                                                                        const response = await bannerStore.setBannerActive(
+                                                                            item.id,
+                                                                            active
+                                                                        );
 
-                                                                    if (response.data.success) {
+                                                                        if (response.data.success) {
+                                                                            setToast(
+                                                                                "success",
+                                                                                `배너가 ${active ? "노출" : "비노출"} 처리되었습니다.`
+                                                                            );
+
+                                                                            await bannerStore.getBannerList();
+                                                                        }
+                                                                    } catch (error) {
+                                                                        console.log(error);
+
                                                                         setToast(
-                                                                            "success",
-                                                                            `배너가 ${active ? "노출" : "비노출"} 처리되었습니다.`
+                                                                            "warning",
+                                                                            "배너 노출 상태 변경에 실패했습니다."
                                                                         );
 
                                                                         await bannerStore.getBannerList();
                                                                     }
-                                                                } catch (error) {
-                                                                    console.log(error);
+                                                                }}
+                                                            />
 
-                                                                    setToast(
-                                                                        "warning",
-                                                                        "배너 노출 상태 변경에 실패했습니다."
-                                                                    );
-
-                                                                    await bannerStore.getBannerList();
-                                                                }
+                                                            <span className="slider"/>
+                                                        </ToggleSwitch>
+                                                    </td>
+                                                    <td>
+                                                        <Button
+                                                            size="sm"
+                                                            radius="sm"
+                                                            onClick={() => {
+                                                                modalStore.open(
+                                                                    MODAL_PAYLOAD.BANNER_REGISTER_MODAL({
+                                                                        props: {
+                                                                            title: "배너 수정",
+                                                                            dataItem: item,
+                                                                        },
+                                                                    })
+                                                                );
                                                             }}
-                                                        />
+                                                        >
+                                                            수정
+                                                        </Button>
+                                                    </td>
 
-                                                        <span className="slider"/>
-                                                    </ToggleSwitch>
-                                                </td>
-                                                <td>
-                                                    <Button
-                                                        size="sm"
-                                                        radius="sm"
-                                                        onClick={() => {
-                                                            modalStore.open(
-                                                                MODAL_PAYLOAD.BANNER_REGISTER_MODAL({
-                                                                    props: {
-                                                                        title: "배너 수정",
-                                                                        dataItem: item,
-                                                                    },
-                                                                })
-                                                            );
-                                                        }}
-                                                    >
-                                                        수정
-                                                    </Button>
-                                                </td>
-
-                                            </BannerRow>
-                                        )}
-                                    </Draggable>
-                                ))}
+                                                </BannerRow>
+                                            )}
+                                        </Draggable>
+                                    ))
+                                    : 
+                                    <tr>
+                                        <td colSpan={6}>
+                                            데이터가 없습니다.
+                                        </td>
+                                    </tr>
+                                }
                                 {provided.placeholder}
 
                             </tbody>

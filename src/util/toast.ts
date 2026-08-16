@@ -8,6 +8,14 @@ import { TOAST_OPTIONS } from "@/constants";
 
 type ToastType = "success" | "warning" | "error";
 
+/**
+ * 타입에 따른 아이콘과 옵션을 적용한 Toast 메시지 출력
+ *
+ * @param {ToastType} type - Toast 메시지 타입
+ * @param {string} text - 출력할 메시지
+ * @param {ToastOptions} options - 추가 Toast 옵션
+ * @returns {void}
+ */
 export const setToast = (
     type: ToastType,
     text: string,

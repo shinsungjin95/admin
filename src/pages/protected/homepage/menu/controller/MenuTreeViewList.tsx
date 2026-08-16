@@ -4,12 +4,6 @@ import {
     Droppable,
     Draggable,
 } from "@hello-pangea/dnd";
-
-import {
-    Item,
-    ItemMain,
-    List,
-} from "@components/DragAndDrop/style";
 import {observer} from "mobx-react";
 import {useStore} from "@/store";
 import {FaPlus} from "react-icons/fa6";
@@ -87,7 +81,7 @@ const MenuTreeViewList = observer(({
                 <Droppable droppableId={"root"} type={"root"}>
                     {(provided) => {
                         return (
-                            <List ref={provided.innerRef} {...provided.droppableProps}>
+                            <TreeviewListWrap ref={provided.innerRef} {...provided.droppableProps}>
                                 {items.map((parent, pIdx) => (
                                     <Draggable
                                         key={parent.id}
@@ -95,15 +89,15 @@ const MenuTreeViewList = observer(({
                                         index={pIdx}
                                     >
                                         {(dragProvided, snapshot) => (
-                                            <Item
+                                            <TreeviewItem
                                                 ref={dragProvided.innerRef}
                                                 {...dragProvided.draggableProps}
                                                 $dragging={snapshot.isDragging}
                                             >
                                                 <MainItemWrap>
-                                                    <ItemMain {...dragProvided.dragHandleProps}>
+                                                    <TreeviewItemMain {...dragProvided.dragHandleProps}>
                                                         {parent.title}
-                                                    </ItemMain>
+                                                    </TreeviewItemMain>
                                                     <div className={"btn-wrap"}>
                                                         <Button
                                                             size={"xsm"}
@@ -177,7 +171,7 @@ const MenuTreeViewList = observer(({
                                                 </MainItemWrap>
                                                 <Droppable droppableId={parent.id} type={"child"}>
                                                     {(childProvided, childSnap) => (
-                                                        <List
+                                                        <TreeviewListWrap
                                                             ref={childProvided.innerRef}
                                                             {...childProvided.droppableProps}
                                                             $over={childSnap.isDraggingOver}
@@ -190,13 +184,13 @@ const MenuTreeViewList = observer(({
                                                                     index={cIdx}
                                                                 >
                                                                     {(cProvided, cSnap) => (
-                                                                        <Item
+                                                                        <TreeviewItem
                                                                             ref={cProvided.innerRef}
                                                                             {...cProvided.draggableProps}
                                                                             $dragging={cSnap.isDragging}
                                                                             $child={true}
                                                                         >
-                                                                            <ItemMain {...cProvided.dragHandleProps}>
+                                                                            <TreeviewItemMain {...cProvided.dragHandleProps}>
                                                                                 <div className={"inner"}>
                                                                                     <p>
                                                                                         {
@@ -262,21 +256,21 @@ const MenuTreeViewList = observer(({
                                                                                         삭제
                                                                                     </Button>
                                                                                 </div>
-                                                                            </ItemMain>
-                                                                        </Item>
+                                                                            </TreeviewItemMain>
+                                                                        </TreeviewItem>
                                                                     )}
                                                                 </Draggable>
                                                             ))}
                                                             {childProvided.placeholder}
-                                                        </List>
+                                                        </TreeviewListWrap>
                                                     )}
                                                 </Droppable>
-                                            </Item>
+                                            </TreeviewItem>
                                         )}
                                     </Draggable>
                                 ))}
                                 {provided.placeholder}
-                            </List>
+                            </TreeviewListWrap>
                         );
                     }}
                 </Droppable>
@@ -296,6 +290,48 @@ const MainItemWrap = styled.div`
         display: flex;
         align-items: center;
         gap: 10px;
+    }
+`
+
+const TreeviewListWrap = styled.div<{ $over?: boolean; $childWrap?: boolean }>`
+    display: flex;
+    flex-direction: column;
+    gap: ${({$childWrap}) => ($childWrap ? "10px" : "30px")};
+    margin-top: ${({$childWrap}) => ($childWrap ? "20px" : null)};
+    ${({$over}) => $over && `
+        background: ${theme.colors.palette.brand300};
+        border: 1px dashed ${theme.colors.palette.brand900};
+    `}
+`;
+
+const TreeviewItem = styled.div<{ $dragging?: boolean; $child?: boolean; }>`
+    background: ${({$child}) => ($child ? `${theme.colors.palette.gray300}` : `${theme.colors.palette.white}`)};
+    border: 1px solid ${({$child}) => ($child ? `${theme.colors.palette.gray300}` : `${theme.colors.palette.brand700}`)};
+    padding: ${({$child}) => ($child ? "10px" : "25px")};
+    border-radius: ${({$child}) => ($child ? "0" : "10px")};
+    ${({$dragging}) => $dragging && `
+        background: ${theme.colors.palette.brand500};
+        transform: rotate(1deg);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    `}
+`;
+
+
+const TreeviewItemMain = styled.div`
+    cursor: grab;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .inner{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .btn-wrap{
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 `
 
