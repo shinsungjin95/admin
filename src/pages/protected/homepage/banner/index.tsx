@@ -7,6 +7,7 @@ import Button from "@/components/Button";
 import {MODAL_PAYLOAD} from "@/constants/Modal";
 import {setToast} from "@/util/toast";
 import BannerList from "./controller/BannerList";
+import BannerPreview from "./controller/Preview";
 
 
 
@@ -24,6 +25,10 @@ const HomePageBannerSetting = observer(() => {
 
     return (
         <BannerWrap>
+            <BannerPreview />
+
+
+
             <CardSection title="홈페이지 배너">
                 <BannerList items={bannerStore.bannerList} checkedList={checkedList} setCheckedList={setCheckedList}/>
             </CardSection>
