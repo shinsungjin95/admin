@@ -7,7 +7,7 @@ import Button from "@/components/Button";
 import {MODAL_PAYLOAD} from "@/constants/Modal";
 import {setToast} from "@/util/toast";
 import BannerList from "./controller/BannerList";
-import BannerPreview from "./controller/Preview";
+import BannerOptionsModal from "./controller/Preview";
 
 
 
@@ -25,7 +25,7 @@ const HomePageBannerSetting = observer(() => {
 
     return (
         <BannerWrap>
-            <BannerPreview />
+            <BannerOptionsModal />
 
 
 

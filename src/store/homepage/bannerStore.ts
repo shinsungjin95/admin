@@ -5,6 +5,21 @@ import api from "@/api";
 export class BannerStore {
     store: Store;
     bannerList = [];
+    bannerConfig = {
+        effect: "",
+        navigation: {
+            active: true,
+        },
+        pagination: {
+            active: true,
+            type: "",
+            position: "",
+        },
+        autoplay: {
+            active: true,
+            delay: 2000,
+        },
+    };
     bannerData = {
         id: undefined,
         title: "",
@@ -29,7 +44,8 @@ export class BannerStore {
         const response = await api.get("banners");
         if (response.data.success) {
             runInAction(() => {
-                this.bannerList = response.data.data;
+                this.bannerList = response.data.data.items;
+                this.bannerConfig = response.data.data.config;
             });
         }
         return response;
@@ -137,6 +153,27 @@ export class BannerStore {
             sortOrder: data.sort_order,
         };
     }
+
+
+
+    setBannerConfig(type, value, subType = undefined) {
+        if (subType) {
+            this.bannerConfig[type][subType] = value;
+            return;
+        }
+
+        this.bannerConfig[type] = value;
+    }
+
+
+    async setPatchBannerConfig() {
+        const payLoad = {
+            config: this.bannerConfig
+        };
+        return await api.patch("banners/config", payLoad);
+    }
+
+
 
     /**
      * 배너 목록 초기화
