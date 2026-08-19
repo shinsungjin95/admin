@@ -154,8 +154,14 @@ export class BannerStore {
         };
     }
 
-
-
+    /**
+     * 배너 설정값 변경
+     * subType 존재 여부에 따라 상위 설정 또는 하위 설정값 변경
+     *
+     * @param type - 변경할 설정 타입
+     * @param value - 변경할 값
+     * @param subType - 변경할 하위 설정 타입
+     */
     setBannerConfig(type, value, subType = undefined) {
         if (subType) {
             this.bannerConfig[type][subType] = value;
@@ -165,7 +171,11 @@ export class BannerStore {
         this.bannerConfig[type] = value;
     }
 
-
+    /**
+     * 배너 설정 저장
+     *
+     * @returns API 응답 데이터
+     */
     async setPatchBannerConfig() {
         const payLoad = {
             config: this.bannerConfig
@@ -181,6 +191,28 @@ export class BannerStore {
     setBannerListClear() {
         this.bannerList = [];
     }
+
+    /**
+     * 배너 설정값 초기화
+     */
+    setBannerOptionsClear() {
+        this.bannerConfig = {
+            effect: "",
+            navigation: {
+                active: true,
+            },
+            pagination: {
+                active: true,
+                type: "",
+                position: "",
+            },
+            autoplay: {
+                active: true,
+                delay: 2000,
+            },
+        };
+    }
+
 
     /**
      * 배너 등록 및 수정 데이터 초기화

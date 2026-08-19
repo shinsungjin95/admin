@@ -7,7 +7,6 @@ import Button from "@/components/Button";
 import {MODAL_PAYLOAD} from "@/constants/Modal";
 import {setToast} from "@/util/toast";
 import BannerList from "./controller/BannerList";
-import BannerOptionsModal from "./controller/Preview";
 
 
 
@@ -25,14 +24,29 @@ const HomePageBannerSetting = observer(() => {
 
     return (
         <BannerWrap>
-            <BannerOptionsModal />
-
-
-
             <CardSection title="홈페이지 배너">
                 <BannerList items={bannerStore.bannerList} checkedList={checkedList} setCheckedList={setCheckedList}/>
             </CardSection>
             <div className="title-btn-wrap">
+                <Button
+                    size="sm"
+                    radius="sm"
+                    onClick={() => {
+                        modalStore.open(
+                            MODAL_PAYLOAD.BANNER_OPTIONS_MODAL({
+                                props: {
+                                    title: "배너 옵션 세팅",
+                                    onCancel: () => {
+                                        bannerStore.setBannerOptionsClear();
+                                    },
+                                },
+                            })
+                        );
+                    }}
+                >
+                    배너 옵션
+                </Button>
+
                 <Button
                     size="sm"
                     radius="sm"

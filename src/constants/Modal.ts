@@ -6,6 +6,7 @@ import RegisterModal from "@components/Modal/item/RegisterModal.tsx";
 import MenuSettingModal from "@components/Modal/item/MenuSettingModal.tsx";
 import ImagePreviewModal from "@/components/Modal/item/ImagePreviewModal";
 import BannerRegisterModal from "@/components/Modal/item/BannerRegisterModal";
+import BannerOptionsModal from "@/components/Modal/item/BannerOptionsModal";
 
 
 const MODAL_TYPE = {
@@ -58,6 +59,16 @@ export const MODAL_PAYLOAD = {
         props: {
             type: MODAL_TYPE.MODAL,
             width: 750,
+            closeBtn: true,
+            ...props,
+        },
+    }),
+
+    BANNER_OPTIONS_MODAL: ({props}) => ({
+        component: BannerOptionsModal,
+        props: {
+            type: MODAL_TYPE.MODAL,
+            width: 900,
             closeBtn: true,
             ...props,
         },

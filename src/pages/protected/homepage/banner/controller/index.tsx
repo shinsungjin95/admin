@@ -37,3 +37,10 @@ export const BANNER_CONFIG_OPTIONS = {
         {value: 2500, label: "2.5초"},
     ],
 };
+
+
+export const PAGINATION_TYPE_MAP = {
+    bullet: "bullets",
+    progress: "progressbar",
+    fraction: "fraction",
+};
