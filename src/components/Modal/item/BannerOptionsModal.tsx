@@ -32,7 +32,7 @@ const BannerOptionsModal = observer(({
             const response = await bannerStore.setPatchBannerConfig();
             if(response.data.success){
                 await bannerStore.getBannerList();
-                setToast("success", "버내 옵션이 업데이트 되었습니다.");
+                setToast("success", "배너 옵션이 업데이트 되었습니다.");
                 onConfirm();
             }
         } catch (e) {
@@ -96,6 +96,26 @@ const BannerOptionsModal = observer(({
                                                 checked={bannerStore.bannerConfig.effect === item.value}
                                                 onChange={(event) => {
                                                     bannerStore.setBannerConfig("effect", event.target.value);
+                                                }}
+                                            />
+                                        )
+                                    }
+                                </div>
+                            </div>
+                            <div className={"wrap-row"}>
+                                <div className={"title"}>옵셭 색상</div>
+                                <div className={"inner"}>
+                                    {
+                                        BANNER_CONFIG_OPTIONS.opt_colors.map((item, idx) =>
+                                            <Input
+                                                key={idx}
+                                                inputType={"radio"}
+                                                label={item.label}
+                                                name={"opt_colors_state"}
+                                                value={item.value}
+                                                checked={bannerStore.bannerConfig.opt_colors === item.value}
+                                                onChange={(event) => {
+                                                    bannerStore.setBannerConfig("opt_colors", event.target.value);
                                                 }}
                                             />
                                         )

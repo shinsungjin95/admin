@@ -9,6 +9,11 @@ export const BANNER_CONFIG_OPTIONS = {
         {value: false, label: "비노출"},
     ],
 
+    opt_colors: [
+        {value: "white", label: "White"},
+        {value: "black", label: "Black"},
+    ],
+
     pagination: [
         {value: true, label: "노출"},
         {value: false, label: "비노출"},

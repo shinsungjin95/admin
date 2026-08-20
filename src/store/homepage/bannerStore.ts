@@ -7,6 +7,7 @@ export class BannerStore {
     bannerList = [];
     bannerConfig = {
         effect: "",
+        opt_colors: "white",
         navigation: {
             active: true,
         },
@@ -198,6 +199,7 @@ export class BannerStore {
     setBannerOptionsClear() {
         this.bannerConfig = {
             effect: "",
+            opt_colors: "white",
             navigation: {
                 active: true,
             },

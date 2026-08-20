@@ -1,4 +1,4 @@
-import { Swiper, SwiperSlide } from "swiper/react";
+import {Swiper, SwiperSlide} from "swiper/react";
 import {
     Navigation,
     Pagination,
@@ -12,7 +12,7 @@ import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 
 import styled from "styled-components";
-import { PAGINATION_TYPE_MAP } from "./index";
+import {PAGINATION_TYPE_MAP} from "./index";
 
 import {
     IoChevronBack,
@@ -21,9 +21,10 @@ import {
 
 const BannerSlide = ({config, slides}) => {
     const paginationType = PAGINATION_TYPE_MAP[config.pagination.type];
-    return(
+    return (
         <BannerSlideWrap
             $paginationPosition={config.pagination.position}
+            $optColor={config.opt_colors}
         >
             <Swiper
                 key={[
@@ -86,16 +87,18 @@ const BannerSlide = ({config, slides}) => {
                             type="button"
                             className="banner-prev"
                             $position="left"
+                            $optColor={config.opt_colors}
                         >
-                            <IoChevronBack size={24} />
+                            <IoChevronBack size={24}/>
                         </NavigationButton>
 
                         <NavigationButton
                             type="button"
                             className="banner-next"
                             $position="right"
+                            $optColor={config.opt_colors}
                         >
-                            <IoChevronForward size={24} />
+                            <IoChevronForward size={24}/>
                         </NavigationButton>
                     </>
                 )}
@@ -103,10 +106,9 @@ const BannerSlide = ({config, slides}) => {
         </BannerSlideWrap>
     )
 }
-
-
 const BannerSlideWrap = styled.div<{
     $paginationPosition: string;
+    $optColor: "white" | "black";
 }>`
     width: 400px;
     height: 250px;
@@ -130,25 +132,20 @@ const BannerSlideWrap = styled.div<{
         object-fit: cover;
     }
 
-
-    /* =========================
-       Pagination 공통
-    ========================= */
+    /* Pagination 공통 */
 
     && .swiper-pagination {
         width: auto;
+        color: ${({$optColor}) => $optColor === "white" ? "#fff" : "#000"};
     }
 
-
-    /* =========================
-       Bullet
-    ========================= */
+    /* Bullet */
 
     && .swiper-pagination-bullets {
         bottom: 0;
         padding: 0 20px 20px;
 
-        ${({ $paginationPosition }) => {
+        ${({$paginationPosition}) => {
             switch ($paginationPosition) {
                 case "bottom-left":
                     return `
@@ -182,7 +179,7 @@ const BannerSlideWrap = styled.div<{
         height: 8px;
         margin: 0 4px;
         opacity: 0.5;
-        background: #fff;
+        background: ${({$optColor}) => $optColor === "white" ? "#fff" : "#000"};
     }
 
     && .swiper-pagination-bullet-active {
@@ -191,10 +188,7 @@ const BannerSlideWrap = styled.div<{
         opacity: 1;
     }
 
-
-    /* =========================
-       Progress
-    ========================= */
+    /* Progress */
 
     && .swiper-pagination-progressbar {
         top: auto;
@@ -203,24 +197,27 @@ const BannerSlideWrap = styled.div<{
         width: 100%;
         height: 4px;
         padding: 0;
-        background: rgba(255, 255, 255, 0.35);
         transform: none;
+
+        background: ${({$optColor}) =>
+                $optColor === "white"
+                        ? "rgba(255, 255, 255, 0.35)"
+                        : "rgba(0, 0, 0, 0.35)"
+        };
     }
 
     && .swiper-pagination-progressbar-fill {
-        background: #fff;
+        background: ${({$optColor}) => $optColor === "white" ? "#fff" : "#000"};
     }
 
-
-    /* =========================
-       Fraction
-    ========================= */
+    /* Fraction */
 
     && .swiper-pagination-fraction {
         bottom: 0;
         padding: 0 20px 20px;
+        color: ${({$optColor}) => $optColor === "white" ? "#fff" : "#000"};
 
-        ${({ $paginationPosition }) => {
+        ${({$paginationPosition}) => {
             switch ($paginationPosition) {
                 case "bottom-left":
                     return `
@@ -250,13 +247,13 @@ const BannerSlideWrap = styled.div<{
     }
 `;
 
-
 const NavigationButton = styled.button<{
     $position: "left" | "right";
+    $optColor: "white" | "black";
 }>`
     position: absolute;
     top: 50%;
-    ${({ $position }) => `${$position}: 12px;`}
+    ${({$position}) => `${$position}: 12px;`}
 
     z-index: 10;
 
@@ -271,8 +268,15 @@ const NavigationButton = styled.button<{
     border: 0;
     border-radius: 50%;
 
-    color: #fff;
-    background: rgba(0, 0, 0, 0.35);
+    color: ${({$optColor}) =>
+            $optColor === "white" ? "#fff" : "#000"
+    };
+
+    background: ${({$optColor}) =>
+            $optColor === "white"
+                    ? "rgba(0, 0, 0, 0.4)"
+                    : "rgba(255, 255, 255, 0.7)"
+    };
 
     cursor: pointer;
 
@@ -280,7 +284,11 @@ const NavigationButton = styled.button<{
     transition: background 0.2s;
 
     &:hover {
-        background: rgba(0, 0, 0, 0.55);
+        background: ${({$optColor}) =>
+                $optColor === "white"
+                        ? "rgba(0, 0, 0, 0.65)"
+                        : "rgba(255, 255, 255, 0.9)"
+        };
     }
 `;
 
