@@ -54,8 +54,8 @@ export const CONTENT_LIST_COLUMN = [
 export const getContentColumns = (subtype) => {
     if (subtype === "card" || subtype === "blog") {
         return [
-            { key: "checked", className: "checked" },
-            { key: "image"},
+            { key: "checked", className: "checked"},
+            { key: "image", className: "img-wrap"},
             { key: "title", header: "제목", className: "title"},
             { key: "updated_at", header: "등록 날짜", className: "date"},
         ];

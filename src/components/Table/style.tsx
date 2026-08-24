@@ -141,10 +141,16 @@ export const CustomListWrap = styled.div`
             .title{
                 padding: 15px 0;
             }
+            .img-wrap{
+                height: 180px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
             img {
                 display: block;
                 width: 100%;
-                height: 180px;
+                height: 100%;
                 object-fit: cover;
             }
             .checked{
@@ -216,6 +222,7 @@ export const PagingWrap = styled.div`
     display: flex;
     align-items: center;
     .page{
+        cursor: pointer;
         width: 25px;
         height: 25px;
         display: flex;

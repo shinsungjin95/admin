@@ -116,7 +116,7 @@ const HomePageContentSetting = observer(() => {
                         <img src={row.images[0]?.url} alt="이미지 미리보기" />
                     )
                 } else{
-                    return <PiEmptyBold />
+                    return <PiEmptyBold size={50}/>
                 }
             }
         }
@@ -162,7 +162,30 @@ const HomePageContentSetting = observer(() => {
                             const response = await contentStore.setDeleteContent(checkedList);
                             console.log(response)
                             if(response.data.success){
-                                setClearTable();
+                                // setClearTable();
+                                const fetchParams = createParams(
+                                    searchParams,
+                                    {
+                                        limit: currentLimit,
+                                    }
+                                );
+                                const result = await contentStore.getContentTable(fetchParams);
+                                console.log(result)
+                                
+                                setCheckedList([]);
+                                if (
+                                    contentStore.contentList.length === 0 &&
+                                    currentPage > 0
+                                ) {
+                                    setSearchParams(
+                                        updateSearchParams(
+                                            searchParams,
+                                            {
+                                                offset: currentPage - 1,
+                                            }
+                                        )
+                                    );
+                                }
                             }
                             setToast("success", "삭제 되었습니다.");
                         }catch(e){

@@ -22,15 +22,14 @@ const BannerRegisterModal = observer(({
                               dataItem = undefined
                           }) => {
     const {bannerStore} = useStore();
-
+    const limitTitleLength = 50;
     const confirmBanner = async () => {
         if (!bannerStore.bannerData.title.trim()) {
             setToast("warning", "제목을 입력해 주세요.");
             return;
         }
-
-        if (bannerStore.bannerData.title.replace(/\r?\n/g, "").length > 20) {
-            setToast("warning", "20자 이하로 입력해주세요.");
+        if (bannerStore.bannerData.title.replace(/\r?\n/g, "").length > limitTitleLength) {
+            setToast("warning", `${limitTitleLength}자 이하로 입력해주세요.`);
             return;
         }
 
@@ -104,7 +103,7 @@ const BannerRegisterModal = observer(({
                                 <textarea 
                                     className={"text-area-inner"}
                                     value={bannerStore.bannerData.title}
-                                    placeholder={"텍스트를 입력해 주세요.(20자 이하로 입력 해주세요.)"}
+                                    placeholder={`텍스트를 입력해 주세요.(${limitTitleLength}자 이하로 입력 해주세요.)`}
                                     onChange={(e) => {
                                         bannerStore.setBannerData("title", e.target.value)
                                     }}
