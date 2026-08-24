@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { FaDoorOpen } from "react-icons/fa6";
 import {Link} from "react-router-dom";
-
-import Button from "@/components/Button/index.jsx";
 import {INDEX_PATH} from "@/constants";
+import { theme } from "@/styles/theme";
 
 
 const NotFoundPage = () => {
@@ -18,15 +17,12 @@ const NotFoundPage = () => {
                         접근할 수 없는 페이지입니다.
                     </span>
                     <Link className={"to-home"} to={INDEX_PATH}>
-                        <FaDoorOpen size={40} color={"#C63611"}/>
-                        <Button>
-                            메인 페이지로 돌아가기
-                        </Button>
+                        메인 페이지로 돌아가기
+                        <FaDoorOpen size={40} color={`${theme.colors.palette.brand900}`}/>
                     </Link>
 
                 </div>
             </ErrorContainer>
-
         </ErrorPageWrapper>
     )
 }
@@ -68,7 +64,7 @@ const ErrorContainer = styled.div`
         flex-direction: column;
         width: 100%;
         .main-text{
-            color: #C63611;
+            color: ${theme.colors.palette.brand900};
             font-weight: 800;
             font-size: 30px;
         }
@@ -82,7 +78,7 @@ const ErrorContainer = styled.div`
         span {
             font-size: 25px;
             line-height: 1.25;
-            color: #C63611;
+            color: ${theme.colors.palette.brand900};
         }
         .to-home{
             margin: 20px 0 0;

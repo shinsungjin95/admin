@@ -1,6 +1,6 @@
 # 🚀 React CMS Admin Template
 
-> https://admin-template.vercel.app
+> https://admin-topaz-ten-11.vercel.app/
 
 > React + TypeScript + MobX + Node.js + Supabase 기반으로 확장 가능한 관리자(Admin) 템플릿입니다.
 > **포트폴리오용 홈페이지 CMS 관리자 시스템**입니다.

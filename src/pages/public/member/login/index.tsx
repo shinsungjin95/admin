@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Input from "@/components/Input";
 import {setToast} from "@/util/toast.ts";
 import {theme} from "@/styles/theme";
@@ -10,10 +10,12 @@ import {COOKIE_NAME} from "@/constants";
 import {ButtonWrap, NoticeBox} from "@styles/CommonStyle.tsx";
 import Button from "@components/Button";
 import { useNavigate } from "react-router-dom";
+import { MODAL_PAYLOAD } from "@/constants/Modal";
+import { TbBrandReact } from "react-icons/tb";
 
 
 const MemberLogin = observer(() => {
-    const {userStore} = useStore();
+    const {userStore, modalStore} = useStore();
     const navigate = useNavigate();
     const [passwordState, setPasswordState] = useState("password");
     const [id, setId] = useState("");
@@ -57,10 +59,26 @@ const loginSubmit = async () => {
             await loginSubmit();
         }
     }
+
+
+    useEffect(() => {
+        modalStore.open(
+            MODAL_PAYLOAD.PROJECT_INFO_MODAL({
+                props: {
+                    title: "CMS Admin 안내문",
+                },
+            })
+        );
+    }, [])
+
     return(
         <MemberLoginWrap>
+            
             <LoginArea>
                 <LoginInputWrap>
+                    <div className={"logo-area"}>
+                        <TbBrandReact size={70}/>
+                    </div>
                     <Input
                         inputType={"text"}
                         value={id}
@@ -81,9 +99,6 @@ const loginSubmit = async () => {
                         onKeyDown={logChkPress}
                     />
                 </LoginInputWrap>
-                <NoticeBox>
-                    * 로그인시 쿠키에 랜덤값을 토큰 저장합니다.
-                </NoticeBox>
                 <ButtonWrap>
                     <Button fullWidth={true} onClick={loginSubmit}>
                         로그인
@@ -112,7 +127,11 @@ const LoginArea = styled.div`
 const LoginInputWrap = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
+    .logo-area{
+        display: flex;
+        justify-content: center;
+    }
 `;
 
 export default MemberLogin;

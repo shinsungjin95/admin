@@ -25,8 +25,10 @@ export class BannerStore {
         id: undefined,
         title: "",
         link: "",
-        image: null,
-        file: null,
+        pcImage: null,
+        pcFile: null,
+        moImage: null,
+        moFile: null,
         sortOrder: undefined,
     }
 
@@ -62,8 +64,11 @@ export class BannerStore {
         const formData = new FormData();
         formData.append("title", this.bannerData.title);
         formData.append("link", this.bannerData.link);
-        if (this.bannerData.file) {
-            formData.append("image", this.bannerData.file);
+        if (this.bannerData.pcFile) {
+            formData.append("pcImage", this.bannerData.pcFile);
+        }
+        if (this.bannerData.moFile) {
+            formData.append("moImage", this.bannerData.moFile);
         }
         const config = {
             headers: {
@@ -149,8 +154,10 @@ export class BannerStore {
             id: data.id,
             title: data.title,
             link: data.link,
-            image: data.image,
-            file: null,
+            pcImage: data.image?.pc ?? null,
+            pcFile: null,
+            moImage: data.image?.mo ?? null,
+            moFile: null,
             sortOrder: data.sort_order,
         };
     }
@@ -224,8 +231,13 @@ export class BannerStore {
             id: undefined,
             title: "",
             link: "",
-            image: null,
-            file: null,
+
+            pcImage: null,
+            pcFile: null,
+
+            moImage: null,
+            moFile: null,
+
             sortOrder: undefined,
         };
     }

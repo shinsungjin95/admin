@@ -7,6 +7,7 @@ import MenuSettingModal from "@components/Modal/item/MenuSettingModal.tsx";
 import ImagePreviewModal from "@/components/Modal/item/ImagePreviewModal";
 import BannerRegisterModal from "@/components/Modal/item/BannerRegisterModal";
 import BannerOptionsModal from "@/components/Modal/item/BannerOptionsModal";
+import ProjectInformationModal from "@/components/Modal/item/ProjectInformationModal";
 
 
 const MODAL_TYPE = {
@@ -84,6 +85,20 @@ export const MODAL_PAYLOAD = {
             ...props,
         },
     }),
+
+
+    PROJECT_INFO_MODAL: ({props}) => ({
+        component: ProjectInformationModal,
+        props: {
+            width: 450,
+            closeBtn: true,
+            ...props,
+        },
+    }),
+
+
+
+
     BASIC_CONFIRM: ({props}) => ({
         props: {
             type: MODAL_TYPE.CONFIRM,

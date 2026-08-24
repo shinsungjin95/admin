@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FaRegSadTear } from "react-icons/fa";
 import {useSearchParams} from "react-router-dom";
+import { theme } from "@/styles/theme";
 const ErrorPage = () => {
 
     const [searchParams] = useSearchParams();
@@ -11,7 +12,7 @@ const ErrorPage = () => {
         <ErrorPageWrapper>
             <ErrorContainer>
                 <div className={"error-message"}>
-                    <FaRegSadTear size={80} color={"#C63611"}/>
+                    <FaRegSadTear size={80} color={`${theme.colors.palette.brand900}`}/>
                     <p>오류가 발생했습니다!</p>
                     {
                         status && status === "401" ?
@@ -75,7 +76,7 @@ const ErrorContainer = styled.div`
         span {
             font-size: 25px;
             line-height: 1.25;
-            color: #C63611;
+            color: ${theme.colors.palette.brand900};
         }
     }
 `;

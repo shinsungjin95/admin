@@ -75,7 +75,7 @@ const BannerSlide = ({config, slides}) => {
                 {slides.map((item) => (
                     <SwiperSlide key={item.id}>
                         <img
-                            src={item.image?.url}
+                            src={item.image?.pc.url}
                             alt={item.title}
                         />
                     </SwiperSlide>

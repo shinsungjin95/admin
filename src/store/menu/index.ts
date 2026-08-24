@@ -1,4 +1,4 @@
-import {makeAutoObservable} from "mobx";
+import {makeAutoObservable, runInAction} from "mobx";
 import {getStore, Store, useStore} from "@/store";
 import {convertMenu} from "@/util/menu.ts";
 import {MENU_LIST} from "@/constants";
@@ -37,7 +37,6 @@ export class MenuStore {
         this.store = store;
         makeAutoObservable(this, {}, {autoBind: true});
         if (initialNavigation) {
-            this.navigationData = initialNavigation.navigation;
             this.setCurrentMenu(initialNavigation.navigation);
         }
     }
@@ -53,6 +52,21 @@ export class MenuStore {
                 ? {...menu, children: convertMenu(list)} : menu
         );
     }
+
+    /**
+     * 홈페이지 메뉴 목록 조회 및 navigationData 저장
+     *
+     * @returns API 응답 데이터
+     */
+    async getNavigationData() {
+        const response = await api.get("menus");
+        if(response.data.success){
+            runInAction(() => {
+                this.navigationData = response.data.data;
+            })
+        }
+    }
+
 
     /**
      * 신규 메뉴 추가
@@ -174,6 +188,13 @@ export class MenuStore {
      */
     async setSaveButton() {
        return await api.post("menus", this.navigationData);
+    }
+
+    /**
+     * 메뉴 관리 navigationData 초기화
+     */
+    setClearNavigation() {
+        this.navigationData = [];
     }
 
 }

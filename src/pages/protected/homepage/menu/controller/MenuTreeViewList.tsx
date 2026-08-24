@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     DragDropContext,
     Droppable,
@@ -41,16 +41,9 @@ const reorder = <T, >(
 };
 
 
-const MenuTreeViewList = observer(({
-                                       items
-                                   }: MenuTreeViewListProps) => {
+const MenuTreeViewList = observer(({items}: MenuTreeViewListProps) => {
     const {menuStore, modalStore} = useStore();
-
-    const handleDragEnd = ({
-                               source,
-                               destination,
-                           }) => {
-
+    const handleDragEnd = ({source, destination}) => {
         if (!destination) return;
         if (source.droppableId === destination.droppableId && source.index === destination.index) return;
         if (source.droppableId === "root" && destination.droppableId === "root") {
@@ -74,6 +67,18 @@ const MenuTreeViewList = observer(({
         next[destParentIndex].children!.splice(destination.index, 0, moved);
         menuStore.setNavigationData(next);
     };
+
+
+
+    useEffect(() => {
+        menuStore.getNavigationData().then().catch((error) => {
+            console.log(error);
+        });
+        return(() => {
+            menuStore.setClearNavigation();
+        })
+    }, []);
+
 
     return (
         <>

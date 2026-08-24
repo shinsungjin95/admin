@@ -1,8 +1,8 @@
 import moment from "moment/moment";
 
 const datePickerInitVal = {
-    startDate: moment().subtract(7, "days").format("YYYY-MM-DD"),
-    endDate: moment().format("YYYY-MM-DD"),
+    startDate: null,
+    endDate: null,
 }
 
 export const getContentLimit = (subtype) => {

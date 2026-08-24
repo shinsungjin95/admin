@@ -4,6 +4,7 @@ import {Suspense} from "react";
 import LoadingContent from "@components/Loading/LoadingInner.tsx";
 import Loading from "@/components/Loading/index.jsx";
 import styled from "styled-components";
+import ModalController from "@/components/Modal/controller";
 
 const LoginRoot = () => {
     return (
@@ -13,6 +14,7 @@ const LoginRoot = () => {
             </LoginRootContainer>
             <Toast/>
             <Loading />
+            <ModalController/>
         </Suspense>
     );
 };

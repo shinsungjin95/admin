@@ -101,7 +101,7 @@ const handleCheck = (index) => {
                                     onChange={handleAllCheck}
                                 />
                             </th>
-                            <th>이미지</th>
+                            <th>이미지(PC)</th>
                             <th>제목</th>
                             <th>노출</th>
                             <th>관리</th>
@@ -142,7 +142,7 @@ const handleCheck = (index) => {
                                                         />
                                                     </td>
                                                     <td>
-                                                        <img src={item.image?.url} alt={item.title} />
+                                                        <img src={item.image?.pc.url} alt={item.title} />
                                                     </td>
                                                     <td className={"banner-title"}>
                                                         {item.title}
@@ -318,7 +318,7 @@ const BannerTable = styled.table`
     .banner-title {
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: pre-wrap;
     }
 `;
 const BannerRow = styled.tr<{

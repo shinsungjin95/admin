@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {theme} from "@styles/theme";
+import { IoClose } from "react-icons/io5";
 
 export const ButtonWrap =  styled.div<{ $mt?: string; $gap?: string; }>`
     display: flex;
@@ -52,17 +53,42 @@ export const ImageItem = styled.div`
         border-radius: 4px;
     }
 
-    button {
+    .close-btn {
         position: absolute;
         top: 5px;
         right: 5px;
-
         width: 24px;
         height: 24px;
-
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.7);
         border: 0;
         border-radius: 50%;
         cursor: pointer;
+    }
+`;
+
+export const UploadLabel = styled.label`
+    min-width: 180px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    &:hover {
+        background: #f7f7f7;
+        border-color: #bbb;
+    }
+    input {
+        display: none;
     }
 `;
 
@@ -83,12 +109,12 @@ export const NewImage = ({
                 alt={file.name}
             />
 
-            <button
-                type="button"
+            <div
+                className={"close-btn"}
                 onClick={onRemove}
             >
-                ×
-            </button>
+                <IoClose color={"#fff"} size={18}/>
+            </div>
         </ImageItem>
     );
 };

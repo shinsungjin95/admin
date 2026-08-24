@@ -24,14 +24,19 @@ const HomePageBannerSetting = observer(() => {
 
     return (
         <BannerWrap>
-            <CardSection title="홈페이지 배너">
+            <CardSection title={"홈페이지 배너"}>
                 <BannerList items={bannerStore.bannerList} checkedList={checkedList} setCheckedList={setCheckedList}/>
             </CardSection>
-            <div className="title-btn-wrap">
+            <div className={"title-btn-wrap"}>
                 <Button
-                    size="sm"
-                    radius="sm"
+                    size={"sm"}
+                    radius={"sm"}
                     onClick={() => {
+                        const activeBanner = bannerStore.bannerList.filter((item) => item.active);
+                        if(activeBanner.length === 0){
+                            setToast("warning", "노출 된 배너가 없습니다.");
+                            return;
+                        }
                         modalStore.open(
                             MODAL_PAYLOAD.BANNER_OPTIONS_MODAL({
                                 props: {
@@ -48,8 +53,8 @@ const HomePageBannerSetting = observer(() => {
                 </Button>
 
                 <Button
-                    size="sm"
-                    radius="sm"
+                    size={"sm"}
+                    radius={"sm"}
                     onClick={() => {
                         modalStore.open(
                             MODAL_PAYLOAD.BANNER_REGISTER_MODAL({
@@ -67,8 +72,8 @@ const HomePageBannerSetting = observer(() => {
                 </Button>
                 
                 <Button
-                    size="sm"
-                    radius="sm"
+                    size={"sm"}
+                    radius={"sm"}
                     outlined
                     onClick={() => {
                         if(checkedList.length === 0){

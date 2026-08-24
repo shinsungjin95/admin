@@ -3,7 +3,7 @@
 
 import Input from "@/components/Input";
 import {useStore} from "@/store";
-import {FormWrap} from "@/styles/CommonStyle";
+import {FormWrap, NoticeBox} from "@/styles/CommonStyle";
 import {observer} from "mobx-react";
 import React, { useEffect } from "react";
 import {Dimmer, ModalHeader, ModalItem, ModalWrapper} from "../style.tsx";
@@ -80,7 +80,11 @@ const BannerOptionsModal = observer(({
                 </ModalHeader>
                 <BannerOptionsWrap>
                     <div className={"prev-inner"}>
-                        <BannerSlide config={config} slides={activeBanners} />
+
+                        <div className={"slide-wrap"}>
+                            <NoticeBox>* PC(슬라이드)</NoticeBox>
+                            <BannerSlide config={config} slides={activeBanners} />
+                        </div>
                         <FormWrap>
                             <div className={"wrap-row"}>
                                 <div className={"title"}>효과</div>

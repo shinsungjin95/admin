@@ -17,8 +17,6 @@ const ImagePreviewModal = ({
                               modalDepth,
                               url,
                           }) => {
-
-                            console.log(url)
     return (
         <ModalWrapper
             $modalDepth={modalDepth}

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { TbError404 } from "react-icons/tb";
+import { theme } from "@/styles/theme";
 
 const NotFoundPage = () => {
 
@@ -8,7 +9,7 @@ const NotFoundPage = () => {
         <ErrorPageWrapper>
             <ErrorContainer>
                 <div className={"error-message"}>
-                    <TbError404 size={80} color={"#C63611"}/>
+                    <TbError404 size={80} color={`${theme.colors.palette.brand900}`}/>
                     <p>오류가 발생했습니다!</p>
                     <span>
                         이용에 불편을 드려 죄송합니다.<br/>
@@ -65,7 +66,7 @@ const ErrorContainer = styled.div`
         span {
             font-size: 25px;
             line-height: 1.25;
-            color: #C63611;
+            color: ${theme.colors.palette.brand900};
         }
     }
 `;

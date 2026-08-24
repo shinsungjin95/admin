@@ -120,7 +120,7 @@ const DatePicker = ({
                 <Input
                     value={formatValue(type, dateValue, {fromKey, toKey})}
                     readOnly
-                    placeholder={"날짜 선택"}
+                    placeholder={"YYYY-MM-DD ~ YYYY-MM-DD"}
                     onClick={() => {
                         setTempRange({
                             [fromKey]: dateValue?.[fromKey],

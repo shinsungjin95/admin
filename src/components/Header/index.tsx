@@ -9,6 +9,8 @@ import {useCookies} from "react-cookie";
 import {COOKIE_NAME} from "@/constants";
 import { useNavigate } from "react-router-dom";
 import {LOGIN_PATH} from "@/constants";
+import Button from "../Button";
+import { IoHome } from "react-icons/io5";
 
 const Header = observer(() => {
     const {menuStore, userStore} = useStore();
@@ -56,7 +58,19 @@ const Header = observer(() => {
                         </div>
                     }
                 </div>
-                <div className={"logout"} onClick={logOut}>로그아웃</div>
+                <div className={"info-detail-wrap"}>
+                    <Button
+                            outlined
+                            size={"sm"}
+                            radius={"sm"}
+                            onClick={() => {
+                                window.open(import.meta.env.VITE_HOMEPAGE_APP_URL, "_blank");
+                            }}
+                        >
+                            <IoHome /> 홈페이지
+                        </Button>
+                    <div className={"logout"} onClick={logOut}>로그아웃</div>
+                </div>
             </HeaderWrap>
         </>
     );
@@ -105,9 +119,15 @@ const HeaderWrap = styled.div`
             }
         }
     }
-    .logout{
-        padding: 0 24px;
-        cursor: pointer;
+    .info-detail-wrap{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 0 25px;
+        .logout{
+            cursor: pointer;
+        }
     }
+    
 `;
 export default Header;

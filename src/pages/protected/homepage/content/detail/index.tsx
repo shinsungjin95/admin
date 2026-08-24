@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import CardSection from "@/components/Layout/CardSection";
 import { useStore } from "@/store";
-import { ButtonWrap, FormWrap, ImageItem, NewImage } from "@/styles/CommonStyle";
+import { ButtonWrap, FormWrap, ImageItem, NewImage, UploadLabel } from "@/styles/CommonStyle";
 import { observer } from "mobx-react";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
@@ -11,6 +11,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { setToast } from "@/util/toast";
 import { theme } from "@/styles/theme";
+import { IoCloudUploadOutline, IoClose } from "react-icons/io5";
 
 const HomePageContentDetail = observer(() => {
     const {contentStore} = useStore();
@@ -79,42 +80,65 @@ const HomePageContentDetail = observer(() => {
                         <div className={"title"}>이미지 업로드</div>
 
                         <div className={"inner"}>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                onChange={(e) => {
-                                    const files = Array.from(e.target.files || []);
-                                    if (!files.length) return;
-                                    contentStore.addContentFiles(files);
-                                    e.target.value = "";
-                                }}
-                            />
-                            <ImageList>
-                                {contentStore.contentData.images.map((image, index) => (
-                                    <ImageItem key={`existing-${image.url}`}>
-                                        <img src={image.url} alt=""/>
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                contentStore.removeContentImage(index);
-                                            }}
-                                        >
-                                            ×
-                                        </button>
-                                    </ImageItem>
-                                ))}
+                            <UploadLabel>
+                                <IoCloudUploadOutline size={22} />
+                                <span>다중 이미지 업로드</span>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    onChange={(e) => {
+                                        const files = Array.from(
+                                            e.target.files || []
+                                        );
 
-                                {/* 새로 선택한 이미지 */}
-                                {contentStore.contentData.files.map((file, index) => (
-                                    <NewImage
-                                        key={`new-${file.name}-${file.lastModified}-${index}`}
-                                        file={file}
-                                        onRemove={() => {
-                                            contentStore.removeContentFile(index);
-                                        }}
-                                    />
-                                ))}
+                                        if (!files.length) return;
+
+                                        contentStore.addContentFiles(files);
+
+                                        e.target.value = "";
+                                    }}
+                                />
+                            </UploadLabel>
+
+                            <ImageList>
+                                {contentStore.contentData.images.map(
+                                    (image, index) => (
+                                        <ImageItem
+                                            key={`existing-${image.url}`}
+                                        >
+                                            <img
+                                                src={image.url}
+                                                alt="등록된 이미지"
+                                            />
+
+                                            <div
+                                                className={"close-btn"}
+                                                onClick={() => {
+                                                    contentStore.removeContentImage(
+                                                        index
+                                                    );
+                                                }}
+                                            >
+                                                <IoClose color={"#fff"} size={18}/>
+                                            </div>
+                                        </ImageItem>
+                                    )
+                                )}
+
+                                {contentStore.contentData.files.map(
+                                    (file, index) => (
+                                        <NewImage
+                                            key={`new-${file.name}-${file.lastModified}-${index}`}
+                                            file={file}
+                                            onRemove={() => {
+                                                contentStore.removeContentFile(
+                                                    index
+                                                );
+                                            }}
+                                        />
+                                    )
+                                )}
                             </ImageList>
                         </div>
                     </div>

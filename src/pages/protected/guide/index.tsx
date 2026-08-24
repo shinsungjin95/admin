@@ -8,17 +8,24 @@ import ROUTES from "@/constants/routes.ts";
 const Guide = () => {
     return(
         <>
+            <CardSection title="프로젝트 API 구성 아키텍처 및 가이드(Node)">
+                <GuideInner>
+                    <Button as={Link} outlined to={import.meta.env.VITE_CMS_API_GITHUB_URL} target="_blank" rel="noopener noreferrer">
+                        project cms-api git hub
+                    </Button>
+                </GuideInner>
+            </CardSection>
             <CardSection title="프로젝트 아키텍처 및 가이드">
                 <GuideInner>
-                    <Button as={Link} outlined to={"https://github.com/shinsungjin95/admin"} target="_blank" rel="noopener noreferrer">
+                    <Button as={Link} outlined to={import.meta.env.VITE_ADMIN_GITHUB_URL} target="_blank" rel="noopener noreferrer">
                         project git hub
                     </Button>
                 </GuideInner>
             </CardSection>
-            <CardSection title="프로젝트 API 구성 아키텍처 및 가이드(Node)">
+            <CardSection title="프로젝트 홈페이지 아키텍처 및 가이드">
                 <GuideInner>
-                    <Button as={Link} outlined to={"https://github.com/shinsungjin95/cms-api"} target="_blank" rel="noopener noreferrer">
-                        project cms-api git hub
+                    <Button as={Link} outlined to={import.meta.env.VITE_HOMEPAGE_GITHUB_URL} target="_blank" rel="noopener noreferrer">
+                        project homepage git hub
                     </Button>
                 </GuideInner>
             </CardSection>
