@@ -191,11 +191,11 @@ const BannerSlideWrap = styled.div<{
     /* Progress */
 
     && .swiper-pagination-progressbar {
-        top: auto;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
+        border-radius: 5px;
+        overflow: hidden;
+        top: calc(100% - 25px);
+        bottom: auto;
+        width: 33%;
         padding: 0;
         transform: none;
 
@@ -204,6 +204,33 @@ const BannerSlideWrap = styled.div<{
                         ? "rgba(255, 255, 255, 0.35)"
                         : "rgba(0, 0, 0, 0.35)"
         };
+        ${({$paginationPosition}) => {
+            switch ($paginationPosition) {
+                case "bottom-left":
+                    return `
+                        left: 25px;
+                        right: auto;
+                        transform: none;
+                    `;
+
+                case "bottom-right":
+                    return `
+                        left: auto;
+                        right: 25px;
+                        transform: none;
+                    `;
+
+                case "bottom-center":
+                    return `
+                        left: 50%;
+                        right: auto;
+                        transform: translateX(-50%);
+                    `;
+
+                default:
+                    return "";
+            }
+        }}
     }
 
     && .swiper-pagination-progressbar-fill {

@@ -107,7 +107,7 @@ const BannerOptionsModal = observer(({
                                 </div>
                             </div>
                             <div className={"wrap-row"}>
-                                <div className={"title"}>옵셭 색상</div>
+                                <div className={"title"}>컨텐츠 색상</div>
                                 <div className={"inner"}>
                                     {
                                         BANNER_CONFIG_OPTIONS.opt_colors.map((item, idx) =>
