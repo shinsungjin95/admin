@@ -28,10 +28,6 @@ export class ContentStore {
      */
     async getContentTable(params: URLSearchParams) {
         const search = new URLSearchParams(params);
-        const paramsOffset = search.get("offset");
-        if(paramsOffset){
-            search.set("offset", `${parseInt(paramsOffset) - 1}`);
-        }
         search.delete("type");
         search.delete("subtype");
         const finalParams = `?${search.toString()}`;
