@@ -229,7 +229,6 @@ export const PagingWrap = styled.div`
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background: ${theme.colors.palette.white};
         color: ${theme.colors.palette.brand700};
         &.active{
             pointer-events: none;

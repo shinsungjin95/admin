@@ -62,6 +62,7 @@ const loginSubmit = async () => {
 
 
     useEffect(() => {
+        modalStore.closeAll();
         modalStore.open(
             MODAL_PAYLOAD.PROJECT_INFO_MODAL({
                 props: {
