@@ -30,9 +30,16 @@ export class ContentStore {
         const search = new URLSearchParams(params);
         search.delete("type");
         search.delete("subtype");
+        const offset = search.get("offset");
+        if (offset !== null) {
+            search.set(
+                "offset",
+                String(Math.max(0, Number(offset) - 1))
+            );
+        }
         const finalParams = `?${search.toString()}`;
         const response = await api.get(`contents${finalParams}`);
-        if(response.data.success){
+        if (response.data.success) {
             runInAction(() => {
                 this.contentList = response.data.data.list;
                 this.contentCount = response.data.data.totalCount;
