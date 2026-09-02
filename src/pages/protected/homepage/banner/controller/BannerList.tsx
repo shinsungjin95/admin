@@ -61,7 +61,7 @@ const handleCheck = (index) => {
         if (!result.destination) return;
         if (result.source.index === result.destination.index) return;
         const list = Array.from(items);
-        const [removed] = list.splice(result.source.index);
+        const [removed] = list.splice(result.source.index, 1);
         list.splice(result.destination.index, 0, removed);
         try {
             const response = await bannerStore.setBannerOrder(list);
